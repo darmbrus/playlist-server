@@ -2,22 +2,22 @@ package com.davidarmbrust.spi.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.view.RedirectView;
 
 /**
- * Provides endpoints for application monitoring
+ * Provides root endpoints
  *
  * @author David Armbrust
  */
 @Controller
-public class MonitorController {
+public class SwaggerController {
+
     @RequestMapping(
-            value = "/monitor",
-            method = RequestMethod.GET
+            value = "/"
     )
     @ResponseBody
-    public String getMonitorRoot() {
-        return "hello";
+    public RedirectView getRoot() {
+        return new RedirectView("/swagger-ui.html");
     }
 }

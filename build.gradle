@@ -14,6 +14,8 @@ apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
 
+def swaggerVersion = "2.0.2"
+
 jar {
 	baseName = 'spi'
 	version = '0.0.1-SNAPSHOT'
@@ -25,8 +27,12 @@ repositories {
 	mavenCentral()
 }
 
-
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter-web')
+
+	//Swagger
+	compile("io.springfox:springfox-swagger2:$swaggerVersion")
+	compile("io.springfox:springfox-swagger-ui:$swaggerVersion")
+
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 }
