@@ -2,6 +2,9 @@
 /build/
 !gradle/wrapper/gradle-wrapper.jar
 
+### Secure ###
+/src/main/resources/secure.properties
+
 ### STS ###
 .apt_generated
 .classpath
