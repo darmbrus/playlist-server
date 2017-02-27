@@ -24,4 +24,9 @@ public class SpotifyPropertiesTest {
     public void getClientId() throws Exception {
         assertNotNull(spotifyProperties.getClientId());
     }
+
+    @Test
+    public void getCallbackUrl() throws Exception {
+        assertTrue(spotifyProperties.getCallbackUrl().contains("https://"));
+    }
 }
