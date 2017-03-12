@@ -30,6 +30,12 @@ repositories {
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter-web')
 
+	compile group: 'org.springframework', name: 'spring-context-support'
+
+	// https://mvnrepository.com/artifact/org.freemarker/freemarker
+	compile group: 'org.freemarker', name: 'freemarker', version: '2.3.23'
+
+
 	//Swagger
 	compile("io.springfox:springfox-swagger2:$swaggerVersion")
 	compile("io.springfox:springfox-swagger-ui:$swaggerVersion")

@@ -27,6 +27,6 @@ public class SpotifyPropertiesTest {
 
     @Test
     public void getCallbackUrl() throws Exception {
-        assertTrue(spotifyProperties.getCallbackUrl().contains("https://"));
+        assertTrue(spotifyProperties.getCallbackUrl().contains("http://"));
     }
 }
