@@ -8,6 +8,6 @@
 <ul>
 ${code}
 </ul>
-<a href="/getplaylist">getPlaylists</a>
+<a href="/getAlbum/10UscF31tC7Sz8S2a1mGbM">Get Test Album</a>
 </body>
 </html>
