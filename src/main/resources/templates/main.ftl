@@ -1,14 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<#import "include/pageTemplate.ftl" as page>
+    <@page.pageTemplate>
 <ul>
-${code}
+    <li>${session.getCode()}</li>
+    <li>${sessionCreatedAt}</li>
 </ul>
-<a href="/getAlbum/10UscF31tC7Sz8S2a1mGbM">Get Test Album</a>
-<a href="/getCurrentUser/">Get Current User</a>
-</body>
-</html>
+</@page.pageTemplate>
