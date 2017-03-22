@@ -1,6 +1,7 @@
 package com.davidarmbrust.spi.controller;
 
 import com.davidarmbrust.spi.config.SpotifyProperties;
+import com.davidarmbrust.spi.domain.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,6 +56,8 @@ public class SpotifyAuthController {
     public ModelAndView getCallback( HttpServletRequest request, HttpServletResponse response ) {
         String code = request.getParameter("code");
         LOGGER.debug("Got to callback: codeSize = " + code.length());
+        Session session = new Session(code);
+        request.getSession().setAttribute("session", session);
         request.getSession().setAttribute("code", code);
 
         String templateName = "main";

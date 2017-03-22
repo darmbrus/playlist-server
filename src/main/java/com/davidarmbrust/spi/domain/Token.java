@@ -1,9 +1,12 @@
 package com.davidarmbrust.spi.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.Date;
+
 /**
- * Created by Administrator on 3/21/2017.
+ * Provides storage for tokens received for Spotify
  */
 public class Token {
     @JsonProperty(value = "access_token")
@@ -16,6 +19,9 @@ public class Token {
     private int expiresIn;
     @JsonProperty(value = "refresh_token")
     private String refreshToken;
+
+    @JsonIgnore
+    private Date created = new Date();
 
     public String getAccessToken() {
         return accessToken;
@@ -55,5 +61,18 @@ public class Token {
 
     public void setRefreshToken(String refreshToken) {
         this.refreshToken = refreshToken;
+    }
+
+    public Date getCreated() {
+        return created;
+    }
+
+    public void setCreated(Date created) {
+        this.created = created;
+    }
+
+    public boolean isValid() {
+        long expiresInMillis = expiresIn * 1000;
+        return  (created.getTime() + expiresInMillis > new Date().getTime());
     }
 }
