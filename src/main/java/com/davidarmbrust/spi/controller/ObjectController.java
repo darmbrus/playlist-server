@@ -1,6 +1,7 @@
 package com.davidarmbrust.spi.controller;
 
 import com.davidarmbrust.spi.domain.Album;
+import com.davidarmbrust.spi.domain.User;
 import com.davidarmbrust.spi.service.SpotifyService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,8 +30,24 @@ public class ObjectController {
     @ResponseBody
     public String getAlbum(@PathVariable String id, HttpServletRequest request, HttpServletResponse response) {
         LOGGER.trace("Hit /getAlbum/" + id);
-        spotifyService.setToken((String) request.getSession().getAttribute("code"));
+        spotifyService.setCode(getCode(request));
         Album album = spotifyService.getAlbumById(id);
         return album.getName();
+    }
+
+    @RequestMapping(
+            value = "/getCurrentUser/",
+            method = RequestMethod.GET
+    )
+    @ResponseBody
+    public String getCurrentUser(HttpServletRequest request, HttpServletResponse response) {
+        LOGGER.trace("Hit /getCurrentUser/");
+        spotifyService.setCode(getCode(request));
+        User user = spotifyService.getCurrentUser();
+        return user.getEmail();
+    }
+
+    private String getCode(HttpServletRequest request) {
+        return (String) request.getSession().getAttribute("code");
     }
 }

@@ -27,7 +27,7 @@ public class SpotifyAuthController {
 
     private SpotifyProperties spotifyProperties;
     private static final String AUTHENTICATION_URL = "https://accounts.spotify.com/authorize";
-    private static final String SCOPE = "user-read-private user-read-email";
+    private static final String SCOPE = "user-read-private";
     private static final Logger LOGGER = LoggerFactory.getLogger(SpotifyAuthController.class);
 
     @Autowired
