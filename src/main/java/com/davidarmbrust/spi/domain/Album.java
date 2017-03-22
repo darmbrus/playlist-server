@@ -1,5 +1,6 @@
 package com.davidarmbrust.spi.domain;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -35,4 +36,12 @@ public class Album {
         this.id = id;
     }
 
+    @Override
+    public String toString() {
+        return "Album{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", artists=" + Arrays.toString(artists) +
+                '}';
+    }
 }

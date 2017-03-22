@@ -2,6 +2,7 @@ package com.davidarmbrust.spi.controller;
 
 import com.davidarmbrust.spi.config.SpotifyProperties;
 import com.davidarmbrust.spi.domain.Session;
+import com.davidarmbrust.spi.utility.SessionUtility;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -27,15 +27,18 @@ import java.util.Map;
 public class SpotifyAuthController {
 
     private SpotifyProperties spotifyProperties;
+    private SessionUtility sessionUtility;
     private static final String AUTHENTICATION_URL = "https://accounts.spotify.com/authorize";
     private static final String SCOPE = "user-read-private";
     private static final Logger LOGGER = LoggerFactory.getLogger(SpotifyAuthController.class);
 
     @Autowired
     SpotifyAuthController(
-            SpotifyProperties spotifyProperties
+            SpotifyProperties spotifyProperties,
+            SessionUtility sessionUtility
     ) {
         this.spotifyProperties = spotifyProperties;
+        this.sessionUtility = sessionUtility;
     }
 
     @RequestMapping(
@@ -43,9 +46,14 @@ public class SpotifyAuthController {
             method = RequestMethod.GET
     )
     @ResponseBody
-    public ModelAndView getLogin() {
+    public ModelAndView getLogin(HttpServletRequest request, HttpServletResponse re) {
         LOGGER.trace("Reached Login");
-        return new ModelAndView("redirect:" + AUTHENTICATION_URL, getOAuthQueryParams());
+        Session session = sessionUtility.getSession(request);
+        if (session != null) {
+            return new ModelAndView("redirect:main");
+        } else {
+            return new ModelAndView("redirect:" + AUTHENTICATION_URL, getOAuthQueryParams());
+        }
     }
 
     @RequestMapping(
@@ -58,13 +66,8 @@ public class SpotifyAuthController {
         LOGGER.debug("Got to callback: codeSize = " + code.length());
         Session session = new Session(code);
         request.getSession().setAttribute("session", session);
-        request.getSession().setAttribute("code", code);
 
-        String templateName = "main";
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName(templateName);
-        modelAndView.setStatus(HttpStatus.OK);
-        return modelAndView;
+        return new ModelAndView("redirect:main");
     }
 
     private Map<String, String> getOAuthQueryParams() {

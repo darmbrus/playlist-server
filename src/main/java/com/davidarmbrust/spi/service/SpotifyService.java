@@ -47,12 +47,6 @@ public class SpotifyService {
         return response.getBody();
     }
 
-    private HttpHeaders getTokenHeaders() {
-        return new HttpHeaders() {{
-            set(AUTHORIZATION, "Basic " + new String(Base64.getEncoder().encode((spotifyProperties.getClientId() + ":" + spotifyProperties.getClientSecret()).getBytes())));
-        }};
-    }
-
     private HttpHeaders getAuthHeaders(Session session) {
         return new HttpHeaders() {{
             set(AUTHORIZATION, "Bearer " + session.getToken().getAccessToken());
