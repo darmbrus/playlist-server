@@ -1,13 +1,15 @@
 package com.davidarmbrust.spi.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 /**
  * Created by Administrator on 3/20/2017.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Playlist {
     private String href;
     private String id;
     private String name;
-    private PlaylistTrack[] tracks;
 
     public String getHref() {
         return href;
@@ -31,13 +33,5 @@ public class Playlist {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public PlaylistTrack[] getTracks() {
-        return tracks;
-    }
-
-    public void setTracks(PlaylistTrack[] tracks) {
-        this.tracks = tracks;
     }
 }

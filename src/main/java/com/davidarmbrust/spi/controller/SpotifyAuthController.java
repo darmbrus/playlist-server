@@ -2,6 +2,8 @@ package com.davidarmbrust.spi.controller;
 
 import com.davidarmbrust.spi.config.SpotifyProperties;
 import com.davidarmbrust.spi.domain.Session;
+import com.davidarmbrust.spi.service.SpotifyService;
+import com.davidarmbrust.spi.service.TokenService;
 import com.davidarmbrust.spi.utility.SessionUtility;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,6 +30,8 @@ public class SpotifyAuthController {
 
     private SpotifyProperties spotifyProperties;
     private SessionUtility sessionUtility;
+    private SpotifyService spotifyService;
+    private TokenService tokenService;
     private static final String AUTHENTICATION_URL = "https://accounts.spotify.com/authorize";
     private static final String SCOPE = "user-read-private";
     private static final Logger LOGGER = LoggerFactory.getLogger(SpotifyAuthController.class);
@@ -35,10 +39,14 @@ public class SpotifyAuthController {
     @Autowired
     SpotifyAuthController(
             SpotifyProperties spotifyProperties,
-            SessionUtility sessionUtility
+            SessionUtility sessionUtility,
+            SpotifyService spotifyService,
+            TokenService tokenService
     ) {
         this.spotifyProperties = spotifyProperties;
         this.sessionUtility = sessionUtility;
+        this.spotifyService = spotifyService;
+        this.tokenService = tokenService;
     }
 
     @RequestMapping(
@@ -65,6 +73,8 @@ public class SpotifyAuthController {
         String code = request.getParameter("code");
         LOGGER.debug("Got to callback: codeSize = " + code.length());
         Session session = new Session(code);
+        session = tokenService.checkToken(session);
+        session.setUser(spotifyService.getCurrentUser(session));
         request.getSession().setAttribute("session", session);
 
         return new ModelAndView("redirect:main");

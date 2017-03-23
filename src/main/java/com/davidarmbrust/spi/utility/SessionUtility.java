@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * Created by Administrator on 3/22/2017.
+ * Provides common functionality for session management in controllers
  */
 @Component
 public class SessionUtility {

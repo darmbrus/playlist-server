@@ -69,11 +69,15 @@ public class ObjectController {
         return modelAndView;
     }
 
-    private Session getSession(HttpServletRequest request) {
-        return (Session) request.getSession().getAttribute("session");
-    }
-
-    private String getCode(HttpServletRequest request) {
-        return (String) request.getSession().getAttribute("code");
+    @RequestMapping(
+            value = "/getPlaylists",
+            method = RequestMethod.GET
+    )
+    @ResponseBody
+    public ModelAndView getUserPlaylists(HttpServletRequest request, HttpServletResponse response) {
+        LOGGER.trace("Hit /getPlaylists");
+        Session session = sessionUtility.getSession(request);
+        spotifyService.getUserPlaylists(session);
+        return new ModelAndView();
     }
 }
