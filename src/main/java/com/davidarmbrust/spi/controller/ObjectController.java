@@ -1,6 +1,7 @@
 package com.davidarmbrust.spi.controller;
 
 import com.davidarmbrust.spi.domain.Album;
+import com.davidarmbrust.spi.domain.Playlist;
 import com.davidarmbrust.spi.domain.Session;
 import com.davidarmbrust.spi.domain.User;
 import com.davidarmbrust.spi.service.SpotifyService;
@@ -15,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 
 /**
  * Provides access to Spotify domain objects
@@ -69,11 +71,18 @@ public class ObjectController {
         return modelAndView;
     }
 
-    private Session getSession(HttpServletRequest request) {
-        return (Session) request.getSession().getAttribute("session");
-    }
-
-    private String getCode(HttpServletRequest request) {
-        return (String) request.getSession().getAttribute("code");
+    @RequestMapping(
+            value = "/getPlaylists",
+            method = RequestMethod.GET
+    )
+    @ResponseBody
+    public ModelAndView getUserPlaylists(HttpServletRequest request, HttpServletResponse response) {
+        LOGGER.trace("Hit /getPlaylists");
+        Session session = sessionUtility.getSession(request);
+        ArrayList<Playlist> playlists = spotifyService.getUserPlaylists(session);
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("listObjects");
+        modelAndView.addObject("listObject", playlists);
+        return modelAndView;
     }
 }
