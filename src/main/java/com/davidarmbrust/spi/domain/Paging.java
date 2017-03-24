@@ -1,6 +1,10 @@
 package com.davidarmbrust.spi.domain;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Provides a container for incremental playlist responses
@@ -66,7 +70,15 @@ public class Paging<T> {
         this.items = items;
     }
 
-    public ArrayList<T> getItems() {
+    private ArrayList<T> getItems() {
         return items;
+    }
+
+    @SuppressWarnings("unchecked")
+    public List getConvertedItems(ObjectMapper mapper, Class clazz) {
+        return (List) getItems()
+                .stream()
+                .map(item -> mapper.convertValue(item, clazz))
+                .collect(Collectors.toList());
     }
 }

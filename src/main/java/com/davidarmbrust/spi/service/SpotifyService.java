@@ -10,8 +10,8 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 
 /**
  * Provides access to Spotify API
@@ -57,16 +57,16 @@ public class SpotifyService {
      * @param session is the current users session.
      */
     @SuppressWarnings("unchecked")
-    public ArrayList<Playlist> getUserPlaylists(Session session) {
+    public List<Playlist> getUserPlaylists(Session session) {
         String destination = ROOT_URL + "/v1/users/"+ session.getUser().getId() + "/playlists";
 
         HttpEntity entity = new HttpEntity<>(getAuthHeaders(session));
-        Paging<Playlist> response = restTemplate.exchange(destination, HttpMethod.GET, entity, Paging.class).getBody();
-        ArrayList<Playlist> playlists = response.getItems();
+        Paging<LinkedHashMap> response = restTemplate.exchange(destination, HttpMethod.GET, entity, Paging.class).getBody();
+        List<Playlist> playlists = response.getConvertedItems(mapper, Playlist.class);
         while (response.getNext() != null) {
             destination = response.getNext();
             response = restTemplate.exchange(destination, HttpMethod.GET, entity, Paging.class).getBody();
-            playlists.addAll(response.getItems());
+            playlists.addAll(response.getConvertedItems(mapper, Playlist.class));
         }
         return playlists;
     }

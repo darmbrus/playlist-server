@@ -17,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Provides access to Spotify domain objects
@@ -79,7 +80,7 @@ public class ObjectController {
     public ModelAndView getUserPlaylists(HttpServletRequest request, HttpServletResponse response) {
         LOGGER.trace("Hit /getPlaylists");
         Session session = sessionUtility.getSession(request);
-        ArrayList<Playlist> playlists = spotifyService.getUserPlaylists(session);
+        List<Playlist> playlists = spotifyService.getUserPlaylists(session);
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("listObjects");
         modelAndView.addObject("listObject", playlists);

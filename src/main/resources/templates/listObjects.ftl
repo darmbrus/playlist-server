@@ -1,9 +1,6 @@
 <#import "include/pageTemplate.ftl" as page>
     <@page.pageTemplate>
     <#list listObject as item>
-        <p><#list item as prop>
-            ${prop}
-        </#list></p>
-
+            <p>${item.toString()}</p>
     </#list>
 </@page.pageTemplate>
