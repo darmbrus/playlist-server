@@ -43,6 +43,10 @@ public class SpotifyService {
         return album;
     }
 
+    /**
+     * Retrieves the current user information from Spotify.
+     *
+     */
     public User getCurrentUser(Session session) {
         String destination = ROOT_URL + "/v1/me";
 
@@ -54,7 +58,6 @@ public class SpotifyService {
     /**
      * Retrieves the current users playlists from Spotify.
      *
-     * @param session is the current users session.
      */
     @SuppressWarnings("unchecked")
     public List<Playlist> getUserPlaylists(Session session) {
@@ -69,10 +72,6 @@ public class SpotifyService {
             playlists.addAll(response.getConvertedItems(mapper, Playlist.class));
         }
         return playlists;
-    }
-
-    private static Playlist convertPlaylist(LinkedHashMap map) {
-        return mapper.convertValue(map, Playlist.class);
     }
 
     private HttpHeaders getAuthHeaders(Session session) {

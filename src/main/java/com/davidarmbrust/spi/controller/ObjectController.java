@@ -82,7 +82,7 @@ public class ObjectController {
         Session session = sessionUtility.getSession(request);
         List<Playlist> playlists = spotifyService.getUserPlaylists(session);
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("listObjects");
+        modelAndView.setViewName("listPlaylists");
         modelAndView.addObject("listObject", playlists);
         return modelAndView;
     }
