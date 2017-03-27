@@ -11,6 +11,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Provides access to Spotify API
@@ -49,6 +50,19 @@ public class SpotifyService {
         HttpEntity<User> entity = new HttpEntity<>(getAuthHeaders(session));
         ResponseEntity<User> response = restTemplate.exchange(destination, HttpMethod.GET, entity, User.class);
         return response.getBody();
+    }
+
+    /**
+     * Retrieves a list of tracks for a given playlist.
+     */
+    public List<Track> getPlaylistTracks(Session session, String playlistId) {
+        String destination = ROOT_URL + "/v1/users/" + session.getUser().getId() + "/playlists/" + playlistId + "/tracks";
+        HttpEntity entity = new HttpEntity(getAuthHeaders(session));
+        Paging<LinkedHashMap> response = restTemplate.exchange(destination, HttpMethod.GET, entity, Paging.class).getBody();
+        List<PlaylistTrack> playlistTracks =  resolvePaging(response, PlaylistTrack.class, session);
+        return playlistTracks.stream()
+                .map(PlaylistTrack::getTrack)
+                .collect(Collectors.toList());
     }
 
     /**

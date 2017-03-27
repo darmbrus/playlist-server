@@ -1,9 +1,6 @@
 package com.davidarmbrust.spi.controller;
 
-import com.davidarmbrust.spi.domain.Album;
-import com.davidarmbrust.spi.domain.Playlist;
-import com.davidarmbrust.spi.domain.Session;
-import com.davidarmbrust.spi.domain.User;
+import com.davidarmbrust.spi.domain.*;
 import com.davidarmbrust.spi.service.SpotifyService;
 import com.davidarmbrust.spi.service.TokenService;
 import com.davidarmbrust.spi.utility.SessionUtility;
@@ -13,10 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -84,6 +79,21 @@ public class ObjectController {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("listPlaylists");
         modelAndView.addObject("listObject", playlists);
+        return modelAndView;
+    }
+
+    @RequestMapping(
+            value = "/getPlaylist/{id}",
+            method = RequestMethod.GET
+    )
+    @ResponseBody
+    public ModelAndView getPlaylistTracks(@PathVariable String id, HttpServletRequest request, HttpServletResponse response) {
+        LOGGER.trace("Hit /getPlaylist/" + id);
+        Session session = sessionUtility.getSession(request);
+        List<Track> tracks = spotifyService.getPlaylistTracks(session, id);
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("listObjects");
+        modelAndView.addObject("listObject", tracks);
         return modelAndView;
     }
 }

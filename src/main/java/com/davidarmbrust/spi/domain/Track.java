@@ -2,6 +2,8 @@ package com.davidarmbrust.spi.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import java.util.Arrays;
+
 /**
  * Created by Administrator on 3/20/2017.
  */
@@ -51,5 +53,16 @@ public class Track {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "Track{" +
+                "album=" + album +
+                ", artists=" + Arrays.toString(artists) +
+                ", id='" + id + '\'' +
+                ", href='" + href + '\'' +
+                ", name='" + name + '\'' +
+                '}';
     }
 }

@@ -1,5 +1,6 @@
 package com.davidarmbrust.spi.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Arrays;
@@ -8,6 +9,7 @@ import java.util.List;
 /**
  * Provides container for Album information
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Album {
 
     private String id;
