@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 @Service
 @SuppressWarnings("unchecked")
 public class SpotifyService {
-    private static final Logger LOGGER = LoggerFactory.getLogger(SpotifyService.class);
+    private static final Logger log = LoggerFactory.getLogger(SpotifyService.class);
     private static final ObjectMapper mapper = new ObjectMapper();
 
     private RestTemplate restTemplate;
@@ -38,7 +38,7 @@ public class SpotifyService {
 
         Album album = restTemplate.getForObject(destination, Album.class);
         album.setTracksList(resolvePaging(album.getPagingTracks(), Track.class));
-        LOGGER.debug("Album name: " + album.getName());
+        log.debug("Album found: " + album.getName());
         return album;
     }
 
@@ -49,6 +49,7 @@ public class SpotifyService {
         String destination = ROOT_URL + "/v1/me";
         HttpEntity<User> entity = new HttpEntity<>(getAuthHeaders(session));
         ResponseEntity<User> response = restTemplate.exchange(destination, HttpMethod.GET, entity, User.class);
+        log.debug("User found: " + response.getBody());
         return response.getBody();
     }
 
@@ -60,6 +61,7 @@ public class SpotifyService {
         HttpEntity entity = new HttpEntity(getAuthHeaders(session));
         Paging<LinkedHashMap> response = restTemplate.exchange(destination, HttpMethod.GET, entity, Paging.class).getBody();
         List<PlaylistTrack> playlistTracks =  resolvePaging(response, PlaylistTrack.class, session);
+        log.debug("Playlist tracks found: " + playlistTracks.size());
         return playlistTracks.stream()
                 .map(PlaylistTrack::getTrack)
                 .collect(Collectors.toList());

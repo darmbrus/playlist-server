@@ -20,7 +20,7 @@ import java.util.Base64;
  */
 @Service
 public class TokenService {
-    private static final Logger LOGGER = LoggerFactory.getLogger(TokenService.class);
+    private static final Logger log = LoggerFactory.getLogger(TokenService.class);
 
     private SpotifyProperties spotifyProperties;
     private RestTemplate restTemplate;
@@ -56,9 +56,9 @@ public class TokenService {
             ResponseEntity<Token> response = restTemplate.exchange(destination, HttpMethod.POST, entity, Token.class);
             return response.getBody();
         } catch (RestClientException e) {
-            LOGGER.debug(e.getMessage(), e);
+            log.debug(e.getMessage(), e);
         } catch (Exception e) {
-            LOGGER.debug("Http client request failed: " + e.getMessage(), e);
+            log.debug("Http client request failed: " + e.getMessage(), e);
         }
         return new Token();
     }

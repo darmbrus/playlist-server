@@ -20,7 +20,7 @@ import java.util.List;
 @Controller
 public class ObjectController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ObjectController.class);
+    private static final Logger log = LoggerFactory.getLogger(ObjectController.class);
 
     private SpotifyService spotifyService;
     private TokenService tokenService;
@@ -43,7 +43,7 @@ public class ObjectController {
     )
     @ResponseBody
     public ModelAndView getAlbum(@PathVariable String id, HttpServletRequest request, HttpServletResponse response) {
-        LOGGER.trace("Hit /getAlbum" + id);
+        log.trace("Hit /getAlbum" + id);
         Album album = spotifyService.getAlbumById(id);
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("showObject");
@@ -57,7 +57,7 @@ public class ObjectController {
     )
     @ResponseBody
     public ModelAndView getCurrentUser(HttpServletRequest request, HttpServletResponse response) {
-        LOGGER.trace("Hit /getCurrentUser");
+        log.trace("Hit /getCurrentUser");
         Session session = sessionUtility.getSession(request);
         session = tokenService.checkToken(session);
         User user = spotifyService.getCurrentUser(session);
@@ -73,7 +73,7 @@ public class ObjectController {
     )
     @ResponseBody
     public ModelAndView getUserPlaylists(HttpServletRequest request, HttpServletResponse response) {
-        LOGGER.trace("Hit /getPlaylists");
+        log.trace("Hit /getPlaylists");
         Session session = sessionUtility.getSession(request);
         List<Playlist> playlists = spotifyService.getUserPlaylists(session);
         ModelAndView modelAndView = new ModelAndView();
@@ -88,7 +88,7 @@ public class ObjectController {
     )
     @ResponseBody
     public ModelAndView getPlaylistTracks(@PathVariable String id, HttpServletRequest request, HttpServletResponse response) {
-        LOGGER.trace("Hit /getPlaylist/" + id);
+        log.trace("Hit /getPlaylist/" + id);
         Session session = sessionUtility.getSession(request);
         List<Track> tracks = spotifyService.getPlaylistTracks(session, id);
         ModelAndView modelAndView = new ModelAndView();

@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 public class MainController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(MainController.class);
+    private static final Logger log = LoggerFactory.getLogger(MainController.class);
     private SessionUtility sessionUtility;
 
     @Autowired
@@ -34,7 +34,7 @@ public class MainController {
     )
     @ResponseBody
     public ModelAndView getMain(HttpServletRequest request, HttpServletResponse response) {
-        LOGGER.trace("Got to /main");
+        log.trace("Got to /main");
         String templateName = "main";
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName(templateName);

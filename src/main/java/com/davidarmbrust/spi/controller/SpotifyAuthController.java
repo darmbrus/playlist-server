@@ -8,7 +8,6 @@ import com.davidarmbrust.spi.utility.SessionUtility;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -34,7 +33,7 @@ public class SpotifyAuthController {
     private TokenService tokenService;
     private static final String AUTHENTICATION_URL = "https://accounts.spotify.com/authorize";
     private static final String SCOPE = "user-read-private";
-    private static final Logger LOGGER = LoggerFactory.getLogger(SpotifyAuthController.class);
+    private static final Logger log = LoggerFactory.getLogger(SpotifyAuthController.class);
 
     @Autowired
     SpotifyAuthController(
@@ -55,7 +54,7 @@ public class SpotifyAuthController {
     )
     @ResponseBody
     public ModelAndView getLogin(HttpServletRequest request, HttpServletResponse re) {
-        LOGGER.trace("Reached Login");
+        log.trace("Reached Login");
         Session session = sessionUtility.getSession(request);
         if (session != null) {
             return new ModelAndView("redirect:main");
@@ -71,7 +70,7 @@ public class SpotifyAuthController {
     @ResponseBody
     public ModelAndView getCallback( HttpServletRequest request, HttpServletResponse response ) {
         String code = request.getParameter("code");
-        LOGGER.debug("Got to callback: codeSize = " + code.length());
+        log.debug("Got to callback: codeSize = " + code.length());
         Session session = new Session(code);
         session = tokenService.checkToken(session);
         session.setUser(spotifyService.getCurrentUser(session));
