@@ -74,6 +74,19 @@ public class SpotifyService {
         return playlists;
     }
 
+    @SuppressWarnings("unchecked")
+    private List resolvePaging(Paging response, Class convertTo, Session session) {
+        List output = response.getConvertedItems(mapper, convertTo);
+        HttpEntity entity = new HttpEntity<>(getAuthHeaders(session));
+        String destination;
+        while (response.getNext() != null) {
+            destination = response.getNext();
+            response = restTemplate.exchange(destination, HttpMethod.GET, entity, Paging.class).getBody();
+            output.addAll(response.getConvertedItems(mapper, convertTo));
+        }
+        return output;
+    }
+
     private HttpHeaders getAuthHeaders(Session session) {
         return new HttpHeaders() {{
             set(AUTHORIZATION, "Bearer " + session.getToken().getAccessToken());

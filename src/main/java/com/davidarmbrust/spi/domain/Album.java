@@ -1,7 +1,6 @@
 package com.davidarmbrust.spi.domain;
 
 import java.util.Arrays;
-import java.util.List;
 
 /**
  * Provides container for Album information
@@ -9,6 +8,7 @@ import java.util.List;
 public class Album {
     private String id;
     private String name;
+    private Paging tracks;
 
     public Artist[] getArtists() {
         return artists;
@@ -34,6 +34,14 @@ public class Album {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public Paging getTracks() {
+        return tracks;
+    }
+
+    public void setTracks(Paging tracks) {
+        this.tracks = tracks;
     }
 
     @Override
