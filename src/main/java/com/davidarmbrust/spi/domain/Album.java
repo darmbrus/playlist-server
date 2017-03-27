@@ -1,14 +1,20 @@
 package com.davidarmbrust.spi.domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Provides container for Album information
  */
 public class Album {
+
     private String id;
     private String name;
-    private Paging tracks;
+    @JsonProperty("tracks")
+    private Paging pagingTracks;
+    private List<Track> tracksList;
 
     public Artist[] getArtists() {
         return artists;
@@ -36,12 +42,20 @@ public class Album {
         this.id = id;
     }
 
-    public Paging getTracks() {
-        return tracks;
+    public Paging getPagingTracks() {
+        return pagingTracks;
     }
 
-    public void setTracks(Paging tracks) {
-        this.tracks = tracks;
+    public void setPagingTracks(Paging pagingTracks) {
+        this.pagingTracks = pagingTracks;
+    }
+
+    public List<Track> getTracksList() {
+        return tracksList;
+    }
+
+    public void setTracksList(List<Track> tracksList) {
+        this.tracksList = tracksList;
     }
 
     @Override
