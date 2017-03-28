@@ -72,7 +72,7 @@ public class SpotifyAuthController {
         String code = request.getParameter("code");
         log.debug("Got to callback: codeSize = " + code.length());
         Session session = new Session(code);
-        session = tokenService.checkToken(session);
+        session = tokenService.updateSessionToken(session);
         session.setUser(spotifyService.getCurrentUser(session));
         request.getSession().setAttribute("session", session);
 

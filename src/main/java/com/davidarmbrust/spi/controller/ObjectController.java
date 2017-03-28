@@ -59,7 +59,7 @@ public class ObjectController {
     public ModelAndView getCurrentUser(HttpServletRequest request, HttpServletResponse response) {
         log.trace("Hit /getCurrentUser");
         Session session = sessionUtility.getSession(request);
-        session = tokenService.checkToken(session);
+        session = tokenService.updateSessionToken(session);
         User user = spotifyService.getCurrentUser(session);
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("showObject");

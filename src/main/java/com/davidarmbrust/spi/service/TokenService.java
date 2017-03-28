@@ -36,7 +36,7 @@ public class TokenService {
         this.restTemplate = restTemplate;
     }
 
-    public Session checkToken(Session session) {
+    public Session updateSessionToken(Session session) {
         if(session.getToken() == null) {
             session.setToken(getNewToken(session));
             return session;
