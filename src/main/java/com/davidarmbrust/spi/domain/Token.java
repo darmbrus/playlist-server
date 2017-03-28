@@ -75,4 +75,16 @@ public class Token {
         long expiresInMillis = expiresIn * 1000;
         return  (created.getTime() + expiresInMillis > new Date().getTime());
     }
+
+    @Override
+    public String toString() {
+        return "Token{" +
+                "accessToken='" + accessToken + '\'' +
+                ", tokenType='" + tokenType + '\'' +
+                ", scope='" + scope + '\'' +
+                ", expiresIn=" + expiresIn +
+                ", refreshToken='" + refreshToken + '\'' +
+                ", created=" + created +
+                '}';
+    }
 }

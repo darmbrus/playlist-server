@@ -96,4 +96,20 @@ public class ObjectController {
         modelAndView.addObject("listObject", tracks);
         return modelAndView;
     }
+
+    @RequestMapping(
+            value = "/getRefreshToken",
+            method = RequestMethod.GET
+    )
+    @ResponseBody
+    public ModelAndView getToken(HttpServletRequest request, HttpServletResponse response) {
+        log.trace("Hit /getRefreshToken");
+        Session session = sessionUtility.getSession(request);
+        Token token = tokenService.getRefreshToken(session);
+        session.setToken(token);
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("showObject");
+        modelAndView.addObject("object", token);
+        return modelAndView;
+    }
 }

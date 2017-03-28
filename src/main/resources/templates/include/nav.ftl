@@ -4,4 +4,5 @@
     <li><a href="/getCurrentUser">Get Current User</a></li>
     <li><a href="/getPlaylists">Get Current User Playlists</a></li>
     <li><a href="/getPlaylist/73yarJQPMDGZ2Hkgjo85Qi">Get Test Playlist</a></li>
+    <li><a href="/getRefreshToken">Get refresh token</a></li>
 </ul>

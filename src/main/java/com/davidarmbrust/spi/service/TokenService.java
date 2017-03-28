@@ -16,11 +16,13 @@ import org.springframework.web.client.RestTemplate;
 import java.util.Base64;
 
 /**
- * Created by Administrator on 3/21/2017.
+ * Provides access to Spotify token services for access token management.
  */
 @Service
 public class TokenService {
     private static final Logger log = LoggerFactory.getLogger(TokenService.class);
+
+    private static final String TOKEN_URL = "https://accounts.spotify.com/api/token";
 
     private SpotifyProperties spotifyProperties;
     private RestTemplate restTemplate;
@@ -35,37 +37,57 @@ public class TokenService {
     }
 
     public Session checkToken(Session session) {
-        if(session.getToken().isValid()) {
+        if(session.getToken() == null) {
+            session.setToken(getNewToken(session));
+            return session;
+        } else if(session.getToken().isValid()) {
             return session;
         } else {
-            session.setToken(getNewToken(session));
+            session.setToken(getRefreshToken(session));
             return session;
         }
     }
 
     private Token getNewToken(Session session) {
-        String destination = "https://accounts.spotify.com/api/token";
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         try {
             body.set("grant_type", "authorization_code");
             body.set("code", session.getCode());
             body.set("redirect_uri", spotifyProperties.getCallbackUrl());
             HttpHeaders headers = getTokenHeaders();
-            headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
             HttpEntity<?> entity = new HttpEntity<>(body, headers);
-            ResponseEntity<Token> response = restTemplate.exchange(destination, HttpMethod.POST, entity, Token.class);
+            ResponseEntity<Token> response = restTemplate.exchange(TOKEN_URL, HttpMethod.POST, entity, Token.class);
             return response.getBody();
         } catch (RestClientException e) {
-            log.debug(e.getMessage(), e);
-        } catch (Exception e) {
-            log.debug("Http client request failed: " + e.getMessage(), e);
+            log.error(e.getMessage(), e);
+        }
+        return new Token();
+    }
+
+    public Token getRefreshToken(Session session) {
+        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
+        try {
+            body.set("grant_type", "refresh_token");
+            body.set("refresh_token", session.getToken().getRefreshToken());
+            HttpHeaders headers = getTokenHeaders();
+            HttpEntity entity = new HttpEntity<>(body, headers);
+            ResponseEntity<Token> response = restTemplate.exchange(TOKEN_URL, HttpMethod.POST, entity, Token.class);
+            Token token = response.getBody();
+            if (token.getRefreshToken() == null){
+                token.setRefreshToken(session.getToken().getRefreshToken());
+            }
+            return token;
+        } catch (RestClientException e) {
+            log.error(e.getMessage(), e);
         }
         return new Token();
     }
 
     private HttpHeaders getTokenHeaders() {
-        return new HttpHeaders() {{
+        HttpHeaders headers =  new HttpHeaders() {{
             set(AUTHORIZATION, "Basic " + new String(Base64.getEncoder().encode((spotifyProperties.getClientId() + ":" + spotifyProperties.getClientSecret()).getBytes())));
         }};
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        return headers;
     }
 }

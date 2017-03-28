@@ -13,7 +13,6 @@ public class Session {
 
     public Session(String code) {
         this.code = code;
-        this.token = new Token();
     }
 
     public Session(String code, Token token) {
