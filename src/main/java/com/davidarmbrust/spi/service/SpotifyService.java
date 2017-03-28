@@ -1,6 +1,7 @@
 package com.davidarmbrust.spi.service;
 
 import com.davidarmbrust.spi.domain.*;
+import com.davidarmbrust.spi.domain.api.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

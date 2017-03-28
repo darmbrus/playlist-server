@@ -1,5 +1,7 @@
 package com.davidarmbrust.spi.domain;
 
+import com.davidarmbrust.spi.domain.api.User;
+
 import java.util.Date;
 
 /**

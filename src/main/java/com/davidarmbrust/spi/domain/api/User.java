@@ -1,4 +1,4 @@
-package com.davidarmbrust.spi.domain;
+package com.davidarmbrust.spi.domain.api;
 
 /**
  * Created by Administrator on 3/20/2017.

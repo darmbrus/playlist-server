@@ -1,6 +1,10 @@
 package com.davidarmbrust.spi.controller;
 
 import com.davidarmbrust.spi.domain.*;
+import com.davidarmbrust.spi.domain.api.Album;
+import com.davidarmbrust.spi.domain.api.Playlist;
+import com.davidarmbrust.spi.domain.api.Track;
+import com.davidarmbrust.spi.domain.api.User;
 import com.davidarmbrust.spi.service.SpotifyService;
 import com.davidarmbrust.spi.service.TokenService;
 import com.davidarmbrust.spi.utility.SessionUtility;

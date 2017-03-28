@@ -1,4 +1,4 @@
-package com.davidarmbrust.spi.domain;
+package com.davidarmbrust.spi.domain.api;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
