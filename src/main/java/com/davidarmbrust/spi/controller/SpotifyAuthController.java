@@ -2,6 +2,7 @@ package com.davidarmbrust.spi.controller;
 
 import com.davidarmbrust.spi.config.SpotifyProperties;
 import com.davidarmbrust.spi.domain.Session;
+import com.davidarmbrust.spi.service.AutomationService;
 import com.davidarmbrust.spi.service.SpotifyService;
 import com.davidarmbrust.spi.service.TokenService;
 import com.davidarmbrust.spi.utility.SessionUtility;
@@ -31,6 +32,7 @@ public class SpotifyAuthController {
     private SessionUtility sessionUtility;
     private SpotifyService spotifyService;
     private TokenService tokenService;
+    private AutomationService automationService;
     private static final String AUTHENTICATION_URL = "https://accounts.spotify.com/authorize";
     private static final String SCOPE = "user-read-private playlist-modify-private";
     private static final Logger log = LoggerFactory.getLogger(SpotifyAuthController.class);
@@ -40,12 +42,14 @@ public class SpotifyAuthController {
             SpotifyProperties spotifyProperties,
             SessionUtility sessionUtility,
             SpotifyService spotifyService,
-            TokenService tokenService
+            TokenService tokenService,
+            AutomationService automationService
     ) {
         this.spotifyProperties = spotifyProperties;
         this.sessionUtility = sessionUtility;
         this.spotifyService = spotifyService;
         this.tokenService = tokenService;
+        this.automationService = automationService;
     }
 
     @RequestMapping(
@@ -75,6 +79,7 @@ public class SpotifyAuthController {
         session = tokenService.updateSessionToken(session);
         session.setUser(spotifyService.getCurrentUser(session));
         request.getSession().setAttribute("session", session);
+        automationService.setSession(session);
 
         return new ModelAndView("redirect:main");
     }

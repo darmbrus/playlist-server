@@ -14,6 +14,7 @@ public class SpotifyProperties {
     private String clientSecret;
     private String callbackUrl;
     private String code;
+    private String discoverWeeklyId;
 
     public String getClientId() {
         return clientId;
@@ -45,5 +46,13 @@ public class SpotifyProperties {
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    public String getDiscoverWeeklyId() {
+        return discoverWeeklyId;
+    }
+
+    public void setDiscoverWeeklyId(String discoverWeeklyId) {
+        this.discoverWeeklyId = discoverWeeklyId;
     }
 }

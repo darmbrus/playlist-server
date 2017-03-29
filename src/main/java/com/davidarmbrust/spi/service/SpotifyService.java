@@ -55,10 +55,25 @@ public class SpotifyService {
     }
 
     /**
-     * Retrieves a list of tracks for a given playlist.
+     * Retrieves a list of tracks for a given playlist for the current user.
      */
     public List<Track> getPlaylistTracks(Session session, String playlistId) {
-        String destination = ROOT_URL + "/v1/users/" + session.getUser().getId() + "/playlists/" + playlistId + "/tracks";
+        return getPlaylistTracks(session, session.getUser().getId(), playlistId);
+    }
+
+    /**
+     * Retrieves a list of tracks for spotify's given playlist. Only applicable for discover
+     * weekly retrieval.
+     */
+    public List<Track> getDiscoverWeeklyTracks(Session session, String playlistId) {
+        return getPlaylistTracks(session, "spotify", playlistId);
+    }
+
+    /**
+     * Retrieves a list of tracks for a given playlist.
+     */
+    private List<Track> getPlaylistTracks(Session session, String userId, String playlistId) {
+        String destination = ROOT_URL + "/v1/users/" + userId + "/playlists/" + playlistId + "/tracks";
         HttpEntity entity = new HttpEntity(getAuthHeaders(session));
         Paging<LinkedHashMap> response = restTemplate.exchange(destination, HttpMethod.GET, entity, Paging.class).getBody();
         List<PlaylistTrack> playlistTracks =  resolvePaging(response, PlaylistTrack.class, session);

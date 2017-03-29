@@ -1,5 +1,6 @@
 package com.davidarmbrust.spi.controller;
 
+import com.davidarmbrust.spi.config.SpotifyProperties;
 import com.davidarmbrust.spi.domain.*;
 import com.davidarmbrust.spi.domain.api.Album;
 import com.davidarmbrust.spi.domain.api.Playlist;
@@ -29,16 +30,19 @@ public class ObjectController {
     private SpotifyService spotifyService;
     private TokenService tokenService;
     private SessionUtility sessionUtility;
+    private SpotifyProperties spotifyProperties;
 
     @Autowired
     public ObjectController(
             SpotifyService spotifyService,
             TokenService tokenService,
-            SessionUtility sessionUtility
+            SessionUtility sessionUtility,
+            SpotifyProperties spotifyProperties
     ) {
         this.spotifyService = spotifyService;
         this.tokenService = tokenService;
         this.sessionUtility = sessionUtility;
+        this.spotifyProperties = spotifyProperties;
     }
 
     @RequestMapping(
@@ -98,6 +102,21 @@ public class ObjectController {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("listObjects");
         modelAndView.addObject("listObject", tracks);
+        return modelAndView;
+    }
+
+    @RequestMapping(
+            value = "/getDiscoverWeekly",
+            method = RequestMethod.GET
+    )
+    @ResponseBody
+    public ModelAndView getDiscoverWeekly(HttpServletRequest request, HttpServletResponse response) {
+        log.trace("Hit /getDiscoverWeekly");
+        Session session = sessionUtility.getSession(request);
+        List<Track> playlist = spotifyService.getDiscoverWeeklyTracks(session, spotifyProperties.getDiscoverWeeklyId());
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("listObjects");
+        modelAndView.addObject("listObject", playlist);
         return modelAndView;
     }
 

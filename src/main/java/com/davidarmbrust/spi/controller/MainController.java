@@ -1,5 +1,6 @@
 package com.davidarmbrust.spi.controller;
 
+import com.davidarmbrust.spi.service.AutomationService;
 import com.davidarmbrust.spi.utility.SessionUtility;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,10 +23,12 @@ public class MainController {
 
     private static final Logger log = LoggerFactory.getLogger(MainController.class);
     private SessionUtility sessionUtility;
+    private AutomationService automationService;
 
     @Autowired
-    public MainController(SessionUtility sessionUtility) {
+    public MainController(SessionUtility sessionUtility, AutomationService automationService) {
         this.sessionUtility = sessionUtility;
+        this.automationService = automationService;
     }
 
     @RequestMapping(
@@ -42,5 +45,15 @@ public class MainController {
         modelAndView.addObject("session", sessionUtility.getSession(request));
         modelAndView.addObject("sessionCreatedAt", sessionUtility.getSession(request).getCreatedAt().toString());
         return modelAndView;
+    }
+
+    @RequestMapping(
+            value = "/run",
+            method = RequestMethod.GET
+    )
+    @ResponseBody
+    public String run() {
+        automationService.runSchedule();
+        return "complete";
     }
 }

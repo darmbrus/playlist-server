@@ -38,11 +38,14 @@ public class TokenService {
 
     public Session updateSessionToken(Session session) {
         if(session.getToken() == null) {
+            log.debug("Session token is null, returning new token");
             session.setToken(getNewToken(session));
             return session;
         } else if(session.getToken().isValid()) {
+            log.debug("Session is valid, returning original");
             return session;
         } else {
+            log.debug("Session expired, returning refresh token");
             session.setToken(getRefreshToken(session));
             return session;
         }
