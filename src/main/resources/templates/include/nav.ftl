@@ -5,4 +5,5 @@
     <li><a href="/getPlaylists">Get Current User Playlists</a></li>
     <li><a href="/getPlaylist/73yarJQPMDGZ2Hkgjo85Qi">Get Test Playlist</a></li>
     <li><a href="/getRefreshToken">Get refresh token</a></li>
+    <li><a href="/createPlaylist">Create new playlist</a></li>
 </ul>

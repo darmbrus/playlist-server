@@ -116,4 +116,16 @@ public class ObjectController {
         modelAndView.addObject("object", token);
         return modelAndView;
     }
+
+    @RequestMapping(
+            value = "/createPlaylist",
+            method = RequestMethod.GET
+    )
+    @ResponseBody
+    public ModelAndView createPlaylist(HttpServletRequest request, HttpServletResponse response) {
+        log.trace("Hit /createPlaylist");
+        Session session = sessionUtility.getSession(request);
+        spotifyService.createUserPlaylist("custom playlist", session);
+        return new ModelAndView("redirect:getPlaylists");
+    }
 }

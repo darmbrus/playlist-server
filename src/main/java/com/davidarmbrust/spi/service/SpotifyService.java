@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -76,6 +76,23 @@ public class SpotifyService {
         HttpEntity entity = new HttpEntity<>(getAuthHeaders(session));
         Paging<LinkedHashMap> response = restTemplate.exchange(destination, HttpMethod.GET, entity, Paging.class).getBody();
         return resolvePaging(response, Playlist.class, session);
+    }
+
+    /**
+     * Posts new playlist to a users account.
+     */
+    public Playlist createUserPlaylist(String name, Session session) {
+        String destination = ROOT_URL + "/v1/users/" + session.getUser().getId() + "/playlists";
+        HttpHeaders headers = getAuthHeaders(session);
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HashMap<String, String> body = new HashMap<>();
+        body.put("name", name);
+        body.put("public", "false");
+        body.put("collaborative", "false");
+        HttpEntity<Playlist> entity = new HttpEntity(body, headers);
+        Playlist playlist = restTemplate.exchange(destination, HttpMethod.POST, entity, Playlist.class).getBody();
+        log.debug("Playlist created: " + playlist.getName());
+        return playlist;
     }
 
     /**

@@ -1,6 +1,7 @@
 package com.davidarmbrust.spi.domain.api;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Provides a container for Playlist objects from Spotify.
@@ -12,6 +13,8 @@ public class Playlist {
     private String href;
     private String id;
     private String name;
+    @JsonProperty(value = "public")
+    private boolean publicStatus;
 
     public String getHref() {
         return href;
