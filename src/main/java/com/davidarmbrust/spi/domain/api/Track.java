@@ -14,6 +14,7 @@ public class Track {
     private String id;
     private String href;
     private String name;
+    private String uri;
 
     public Album getAlbum() {
         return album;
@@ -53,6 +54,14 @@ public class Track {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getUri() {
+        return uri;
+    }
+
+    public void setUri(String uri) {
+        this.uri = uri;
     }
 
     @Override

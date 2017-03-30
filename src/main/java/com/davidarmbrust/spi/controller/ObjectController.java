@@ -9,9 +9,11 @@ import com.davidarmbrust.spi.domain.api.User;
 import com.davidarmbrust.spi.service.SpotifyService;
 import com.davidarmbrust.spi.service.TokenService;
 import com.davidarmbrust.spi.utility.SessionUtility;
+import io.swagger.models.Model;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -145,6 +147,20 @@ public class ObjectController {
         log.trace("Hit /createPlaylist");
         Session session = sessionUtility.getSession(request);
         spotifyService.createUserPlaylist("custom playlist", session);
+        return new ModelAndView("redirect:getPlaylists");
+    }
+
+    @RequestMapping(
+            value = "/newPlaylist",
+            method = RequestMethod.GET
+    )
+    @ResponseBody
+    public ModelAndView newPlaylist(HttpServletRequest request, HttpServletResponse response) {
+        log.trace("Hit /createPlaylist");
+        Session session = sessionUtility.getSession(request);
+        Playlist newList = spotifyService.createUserPlaylist("NewPlaylist", session);
+        Album album = spotifyService.getAlbumById("2mmfKRx6fsvwzvR1A8sXK6");
+        spotifyService.addAlbumToPlaylist(album, newList, session);
         return new ModelAndView("redirect:getPlaylists");
     }
 }

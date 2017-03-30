@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Provides container for Album information
@@ -58,6 +59,12 @@ public class Album {
 
     public void setTracksList(List<Track> tracksList) {
         this.tracksList = tracksList;
+    }
+
+    public List<String> getTrackUriList() {
+        return tracksList.stream()
+                .map(Track::getUri)
+                .collect(Collectors.toList());
     }
 
     @Override

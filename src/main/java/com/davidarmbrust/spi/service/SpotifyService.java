@@ -112,6 +112,20 @@ public class SpotifyService {
     }
 
     /**
+     * Posts all tracks in an album to a playlist.
+     */
+    public void addAlbumToPlaylist(Album album, Playlist playlist, Session session) {
+        String destination = ROOT_URL + API_VERSION + "/users/" + session.getUser().getId() + "/playlists/"+ playlist.getId() +"/tracks";
+        List<String> trackList = album.getTrackUriList();
+        HashMap<String, List<String>> body = new HashMap<>();
+        body.put("uris", trackList);
+        HttpHeaders headers = getAuthHeaders(session);
+        HttpEntity entity = new HttpEntity(body, headers);
+        ResponseEntity response = restTemplate.exchange(destination, HttpMethod.POST, entity, Object.class);
+        log.debug("Tracks added to playlist: " + playlist + " " + response.getBody());
+    }
+
+    /**
      * Resolves a paging response from Spotify to a list of objects.
      */
     private List resolvePaging(Paging response, Class convertTo, Session session) {
