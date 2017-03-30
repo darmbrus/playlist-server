@@ -26,6 +26,7 @@ public class SpotifyService {
     private RestTemplate restTemplate;
 
     private static final String ROOT_URL = "https://api.spotify.com";
+    private static final String API_VERSION = "/v1";
 
     @Autowired
     public SpotifyService(
@@ -35,7 +36,7 @@ public class SpotifyService {
     }
 
     public Album getAlbumById(String albumId) {
-        String destination = ROOT_URL + "/v1/albums/" + albumId;
+        String destination = ROOT_URL + API_VERSION + "/albums/" + albumId;
 
         Album album = restTemplate.getForObject(destination, Album.class);
         album.setTracksList(resolvePaging(album.getPagingTracks(), Track.class));
@@ -47,7 +48,7 @@ public class SpotifyService {
      * Retrieves the current user information from Spotify.
      */
     public User getCurrentUser(Session session) {
-        String destination = ROOT_URL + "/v1/me";
+        String destination = ROOT_URL + API_VERSION + "/me";
         HttpEntity<User> entity = new HttpEntity<>(getAuthHeaders(session));
         ResponseEntity<User> response = restTemplate.exchange(destination, HttpMethod.GET, entity, User.class);
         log.debug("User found: " + response.getBody());
@@ -73,7 +74,7 @@ public class SpotifyService {
      * Retrieves a list of tracks for a given playlist.
      */
     private List<Track> getPlaylistTracks(Session session, String userId, String playlistId) {
-        String destination = ROOT_URL + "/v1/users/" + userId + "/playlists/" + playlistId + "/tracks";
+        String destination = ROOT_URL + API_VERSION + "/users/" + userId + "/playlists/" + playlistId + "/tracks";
         HttpEntity entity = new HttpEntity(getAuthHeaders(session));
         Paging<LinkedHashMap> response = restTemplate.exchange(destination, HttpMethod.GET, entity, Paging.class).getBody();
         List<PlaylistTrack> playlistTracks =  resolvePaging(response, PlaylistTrack.class, session);
@@ -87,7 +88,7 @@ public class SpotifyService {
      * Retrieves the current users playlists from Spotify.
      */
     public List<Playlist> getUserPlaylists(Session session) {
-        String destination = ROOT_URL + "/v1/users/" + session.getUser().getId() + "/playlists";
+        String destination = ROOT_URL + API_VERSION + "/users/" + session.getUser().getId() + "/playlists";
         HttpEntity entity = new HttpEntity<>(getAuthHeaders(session));
         Paging<LinkedHashMap> response = restTemplate.exchange(destination, HttpMethod.GET, entity, Paging.class).getBody();
         return resolvePaging(response, Playlist.class, session);
@@ -97,7 +98,7 @@ public class SpotifyService {
      * Posts new playlist to a users account.
      */
     public Playlist createUserPlaylist(String name, Session session) {
-        String destination = ROOT_URL + "/v1/users/" + session.getUser().getId() + "/playlists";
+        String destination = ROOT_URL + API_VERSION + "/users/" + session.getUser().getId() + "/playlists";
         HttpHeaders headers = getAuthHeaders(session);
         headers.setContentType(MediaType.APPLICATION_JSON);
         HashMap<String, String> body = new HashMap<>();
