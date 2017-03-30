@@ -7,4 +7,5 @@
     <li><a href="/getRefreshToken">Get refresh token</a></li>
     <li><a href="/createPlaylist">Create new playlist</a></li>
     <li><a href="/getDiscoverWeekly">Get Discover Weekly</a></li>
+    <li><a href="/buildDiscoverWeekly">Build Discover Weekly</a></li>
 </ul>

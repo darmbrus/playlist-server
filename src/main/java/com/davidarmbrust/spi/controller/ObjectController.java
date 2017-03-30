@@ -9,11 +9,9 @@ import com.davidarmbrust.spi.domain.api.User;
 import com.davidarmbrust.spi.service.SpotifyService;
 import com.davidarmbrust.spi.service.TokenService;
 import com.davidarmbrust.spi.utility.SessionUtility;
-import io.swagger.models.Model;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -161,6 +159,23 @@ public class ObjectController {
         Playlist newList = spotifyService.createUserPlaylist("NewPlaylist", session);
         Album album = spotifyService.getAlbumById("2mmfKRx6fsvwzvR1A8sXK6");
         spotifyService.addAlbumToPlaylist(album, newList, session);
+        return new ModelAndView("redirect:getPlaylists");
+    }
+
+    @RequestMapping(
+            value = "/buildDiscoverWeekly",
+            method = RequestMethod.GET
+    )
+    @ResponseBody
+    public ModelAndView buildDiscoverWeekly(HttpServletRequest request) {
+        log.trace("Hit /buildDiscoverWeekly");
+        Session session = sessionUtility.getSession(request);
+        List<Track> tracks = spotifyService.getDiscoverWeeklyTracks(session, spotifyProperties.getDiscoverWeeklyId());
+        List<Album> albums = spotifyService.getUniqueAlbumList(tracks);
+        Playlist newPlaylist = spotifyService.createUserPlaylist("new Discover", session);
+        for (Album album : albums) {
+            spotifyService.addAlbumToPlaylist(album, newPlaylist, session);
+        }
         return new ModelAndView("redirect:getPlaylists");
     }
 }

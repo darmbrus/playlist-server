@@ -9,9 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
+
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -152,6 +151,18 @@ public class SpotifyService {
             output.addAll(response.getConvertedItems(mapper, convertTo));
         }
         return output;
+    }
+
+    public List<Album> getUniqueAlbumList(List<Track> trackList) {
+        Set<String> albumIds = new HashSet<>();
+        albumIds.addAll(
+                trackList.stream()
+                .map(track -> track.getAlbum().getId())
+                .collect(Collectors.toList())
+        );
+        return albumIds.stream()
+                .map(this::getAlbumById)
+                .collect(Collectors.toList());
     }
 
     private HttpHeaders getAuthHeaders(Session session) {

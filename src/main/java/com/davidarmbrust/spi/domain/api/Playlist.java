@@ -3,6 +3,9 @@ package com.davidarmbrust.spi.domain.api;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Provides a container for Playlist objects from Spotify.
  */
