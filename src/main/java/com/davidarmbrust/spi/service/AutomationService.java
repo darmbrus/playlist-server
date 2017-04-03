@@ -45,7 +45,7 @@ public class AutomationService {
     @Scheduled(cron = "0 0 2 ? * MON")
     public void runSchedule() {
         if (sessionSet) {
-            String playlistName = dateFormat.get().format(new Date()) + " Discover Weekly";
+            String playlistName = dateFormat.get().format(new Date()) + " - Discover Weekly";
             log.debug("Session set: " + session.toString());
             session = tokenService.updateSessionToken(session);
             List<Track> tracks = spotifyService.getDiscoverWeeklyTracks(session, spotifyProperties.getDiscoverWeeklyId());
