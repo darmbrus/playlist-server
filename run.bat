@@ -5,8 +5,8 @@ ECHO BUILDING JAR
 CALL gradlew build
 
 ECHO COPYING FILES
-CALL copy application.properties \run
-CALL copy secure.properties \run
+ECHO CALL copy application.properties \run
+ECHO CALL copy secure.properties \run
 CALL copy build\libs\spi* \run
 
 ECHO RUNNING PROJECT
