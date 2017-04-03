@@ -153,6 +153,9 @@ public class SpotifyService {
         return output;
     }
 
+    /**
+     * Resolves a list of tracks to the associated list of full albums.
+     */
     public List<Album> getUniqueAlbumList(List<Track> trackList) {
         Set<String> albumIds = new HashSet<>();
         albumIds.addAll(

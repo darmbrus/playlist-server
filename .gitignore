@@ -3,7 +3,7 @@
 !gradle/wrapper/gradle-wrapper.jar
 
 ### Secure ###
-/src/main/resources/secure.properties
+/secure.properties
 
 ### STS ###
 .apt_generated

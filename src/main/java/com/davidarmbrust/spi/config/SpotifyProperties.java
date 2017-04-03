@@ -3,6 +3,8 @@ package com.davidarmbrust.spi.config;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * Provides access to Spotify configuration parameters
  */
@@ -10,8 +12,11 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "spotify")
 public class SpotifyProperties {
 
+    @NotNull
     private String clientId;
+    @NotNull
     private String clientSecret;
+    @NotNull
     private String callbackUrl;
     private String code;
     private String discoverWeeklyId;

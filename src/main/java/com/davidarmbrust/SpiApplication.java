@@ -7,7 +7,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
 @EnableScheduling
-@PropertySource(value = "classpath:/secure.properties")
+@PropertySource(value = "file:secure.properties")
 public class SpiApplication {
 
 	public static void main(String[] args) {
