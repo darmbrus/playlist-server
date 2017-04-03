@@ -153,21 +153,6 @@ public class SpotifyService {
         return output;
     }
 
-    /**
-     * Resolves a list of tracks to the associated list of full albums.
-     */
-    public List<Album> getUniqueAlbumList(List<Track> trackList) {
-        Set<String> albumIds = new HashSet<>();
-        albumIds.addAll(
-                trackList.stream()
-                .map(track -> track.getAlbum().getId())
-                .collect(Collectors.toList())
-        );
-        return albumIds.stream()
-                .map(this::getAlbumById)
-                .collect(Collectors.toList());
-    }
-
     private HttpHeaders getAuthHeaders(Session session) {
         return new HttpHeaders() {{
             set(AUTHORIZATION, "Bearer " + session.getToken().getAccessToken());

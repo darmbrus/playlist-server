@@ -30,16 +30,19 @@ public class AutomationService {
     private TokenService tokenService;
     private SpotifyService spotifyService;
     private SpotifyProperties spotifyProperties;
+    private PlaylistService playlistService;
 
     @Autowired
     public AutomationService(
             TokenService tokenService,
             SpotifyService spotifyService,
-            SpotifyProperties spotifyProperties
+            SpotifyProperties spotifyProperties,
+            PlaylistService playlistService
     ) {
         this.tokenService = tokenService;
         this.spotifyService = spotifyService;
         this.spotifyProperties = spotifyProperties;
+        this.playlistService = playlistService;
     }
 
     @Scheduled(cron = "0 0 2 ? * MON")
@@ -49,7 +52,7 @@ public class AutomationService {
             log.debug("Session set: " + session.toString());
             session = tokenService.updateSessionToken(session);
             List<Track> tracks = spotifyService.getDiscoverWeeklyTracks(session, spotifyProperties.getDiscoverWeeklyId());
-            List<Album> albums = spotifyService.getUniqueAlbumList(tracks);
+            List<Album> albums = playlistService.getUniqueAlbumList(tracks);
             Playlist newPlaylist = spotifyService.createUserPlaylist(playlistName, session);
             for (Album album : albums) {
                 spotifyService.addAlbumToPlaylist(album, newPlaylist, session);

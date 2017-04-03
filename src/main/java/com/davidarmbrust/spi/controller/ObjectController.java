@@ -6,6 +6,7 @@ import com.davidarmbrust.spi.domain.api.Album;
 import com.davidarmbrust.spi.domain.api.Playlist;
 import com.davidarmbrust.spi.domain.api.Track;
 import com.davidarmbrust.spi.domain.api.User;
+import com.davidarmbrust.spi.service.PlaylistService;
 import com.davidarmbrust.spi.service.SpotifyService;
 import com.davidarmbrust.spi.service.TokenService;
 import com.davidarmbrust.spi.utility.SessionUtility;
@@ -31,18 +32,21 @@ public class ObjectController {
     private TokenService tokenService;
     private SessionUtility sessionUtility;
     private SpotifyProperties spotifyProperties;
+    private PlaylistService playlistService;
 
     @Autowired
     public ObjectController(
             SpotifyService spotifyService,
             TokenService tokenService,
             SessionUtility sessionUtility,
-            SpotifyProperties spotifyProperties
+            SpotifyProperties spotifyProperties,
+            PlaylistService playlistService
     ) {
         this.spotifyService = spotifyService;
         this.tokenService = tokenService;
         this.sessionUtility = sessionUtility;
         this.spotifyProperties = spotifyProperties;
+        this.playlistService = playlistService;
     }
 
     @RequestMapping(
@@ -171,7 +175,7 @@ public class ObjectController {
         log.trace("Hit /buildDiscoverWeekly");
         Session session = sessionUtility.getSession(request);
         List<Track> tracks = spotifyService.getDiscoverWeeklyTracks(session, spotifyProperties.getDiscoverWeeklyId());
-        List<Album> albums = spotifyService.getUniqueAlbumList(tracks);
+        List<Album> albums = playlistService.getUniqueAlbumList(tracks);
         Playlist newPlaylist = spotifyService.createUserPlaylist("new Discover", session);
         for (Album album : albums) {
             spotifyService.addAlbumToPlaylist(album, newPlaylist, session);
