@@ -32,6 +32,14 @@ public class MainController {
     }
 
     @RequestMapping(
+            value = "/",
+            method = RequestMethod.GET
+    )
+    @ResponseBody ModelAndView getRoot() {
+        return new ModelAndView("redirect:login");
+    }
+
+    @RequestMapping(
             value = "/main",
             method = RequestMethod.GET
     )
