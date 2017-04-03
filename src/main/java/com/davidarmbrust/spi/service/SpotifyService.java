@@ -75,7 +75,7 @@ public class SpotifyService {
     private List<Track> getPlaylistTracks(Session session, String userId, String playlistId) {
         String destination = ROOT_URL + API_VERSION + "/users/" + userId + "/playlists/" + playlistId + "/tracks";
         HttpEntity entity = new HttpEntity(getAuthHeaders(session));
-        Paging<LinkedHashMap> response = restTemplate.exchange(destination, HttpMethod.GET, entity, Paging.class).getBody();
+        Paging response = restTemplate.exchange(destination, HttpMethod.GET, entity, Paging.class).getBody();
         List<PlaylistTrack> playlistTracks =  resolvePaging(response, PlaylistTrack.class, session);
         log.debug("Playlist tracks found: " + playlistTracks.size());
         return playlistTracks.stream()
@@ -89,7 +89,7 @@ public class SpotifyService {
     public List<Playlist> getUserPlaylists(Session session) {
         String destination = ROOT_URL + API_VERSION + "/users/" + session.getUser().getId() + "/playlists";
         HttpEntity entity = new HttpEntity<>(getAuthHeaders(session));
-        Paging<LinkedHashMap> response = restTemplate.exchange(destination, HttpMethod.GET, entity, Paging.class).getBody();
+        Paging response = restTemplate.exchange(destination, HttpMethod.GET, entity, Paging.class).getBody();
         return resolvePaging(response, Playlist.class, session);
     }
 

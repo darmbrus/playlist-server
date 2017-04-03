@@ -3,15 +3,16 @@ package com.davidarmbrust.spi.domain.api;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
 /**
  * Provides a container for incremental playlist responses
  */
-public class Paging<T> {
+public class Paging {
     private String href;
-    private ArrayList<T> items;
+    private ArrayList<LinkedHashMap> items;
     private int limit;
     private String next;
     private int offset;
@@ -66,11 +67,11 @@ public class Paging<T> {
         this.total = total;
     }
 
-    public void setItems(ArrayList<T> items) {
+    public void setItems(ArrayList<LinkedHashMap> items) {
         this.items = items;
     }
 
-    private ArrayList<T> getItems() {
+    private ArrayList<LinkedHashMap> getItems() {
         return items;
     }
 
