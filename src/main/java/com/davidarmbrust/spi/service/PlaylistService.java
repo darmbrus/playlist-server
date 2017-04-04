@@ -5,9 +5,7 @@ import com.davidarmbrust.spi.domain.api.Track;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -38,5 +36,20 @@ public class PlaylistService {
         return albumIds.stream()
                 .map(albumId -> spotifyService.getAlbumById(albumId))
                 .collect(Collectors.toList());
+    }
+
+    /**
+     * Returns a randomized list of albums.
+     */
+    public List<Album> shuffleAlbumList(List<Album> albumList) {
+        int listSize = albumList.size();
+        List<Album> shuffledList = new ArrayList<>();
+        Random random = new Random();
+        for(int i = 0; i < listSize; i++) {
+           int randomIndex = random.nextInt(listSize - i);
+           shuffledList.add(albumList.get(randomIndex));
+           albumList.remove(randomIndex);
+        }
+        return shuffledList;
     }
 }
