@@ -1,6 +1,7 @@
 package com.davidarmbrust.spi.domain.api;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Arrays;
@@ -19,6 +20,8 @@ public class Album {
     private Paging pagingTracks;
     private List<Track> tracksList;
 
+    private Artist[] artists;
+
     public Artist[] getArtists() {
         return artists;
     }
@@ -26,8 +29,6 @@ public class Album {
     public void setArtists(Artist[] artists) {
         this.artists = artists;
     }
-
-    private Artist[] artists;
 
     public String getName() {
         return name;
@@ -61,7 +62,7 @@ public class Album {
         this.tracksList = tracksList;
     }
 
-    public List<String> getTrackUriList() {
+    public List<String> buildTrackUriList() {
         return tracksList.stream()
                 .map(Track::getUri)
                 .collect(Collectors.toList());

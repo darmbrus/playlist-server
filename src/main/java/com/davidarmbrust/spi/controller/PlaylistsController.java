@@ -2,6 +2,7 @@ package com.davidarmbrust.spi.controller;
 
 import com.davidarmbrust.spi.domain.Session;
 import com.davidarmbrust.spi.domain.api.Playlist;
+import com.davidarmbrust.spi.domain.api.Track;
 import com.davidarmbrust.spi.service.PlaylistService;
 import com.davidarmbrust.spi.service.SpotifyService;
 import com.davidarmbrust.spi.service.TokenService;
@@ -10,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -62,5 +64,21 @@ public class PlaylistsController {
         modelAndView.setViewName("playlists/index");
         modelAndView.addObject("listObject", playlists);
         return modelAndView;
+    }
+
+    @RequestMapping(
+            value = "/{id}",
+            method = RequestMethod.GET
+    )
+    @ResponseBody
+    public List<Track> getPlaylistById(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            @PathVariable String id
+    ) {
+        log.trace("Hit GET /playlists/" + id);
+        Session session = sessionUtility.getSession(request);
+        session = tokenService.updateSessionToken(session);
+        return spotifyService.getPlaylistTracks(session, id);
     }
 }

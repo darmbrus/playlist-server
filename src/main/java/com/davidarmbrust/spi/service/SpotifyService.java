@@ -115,7 +115,7 @@ public class SpotifyService {
      */
     public void addAlbumToPlaylist(Album album, Playlist playlist, Session session) {
         String destination = ROOT_URL + API_VERSION + "/users/" + session.getUser().getId() + "/playlists/"+ playlist.getId() +"/tracks";
-        List<String> trackList = album.getTrackUriList();
+        List<String> trackList = album.buildTrackUriList();
         HashMap<String, List<String>> body = new HashMap<>();
         body.put("uris", trackList);
         HttpHeaders headers = getAuthHeaders(session);
