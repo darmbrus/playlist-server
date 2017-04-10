@@ -3,7 +3,7 @@ package com.davidarmbrust.spi.domain.api;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
- * Created by Administrator on 3/27/2017.
+ * Provides container for Playlist Track response.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class PlaylistTrack {

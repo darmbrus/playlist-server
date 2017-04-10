@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
- * Created by Administrator on 4/3/2017.
+ * Provides api access to users playlists.
  */
 @Controller
 @RequestMapping(value = "/playlists")

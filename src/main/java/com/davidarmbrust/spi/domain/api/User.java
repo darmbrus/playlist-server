@@ -1,7 +1,7 @@
 package com.davidarmbrust.spi.domain.api;
 
 /**
- * Created by Administrator on 3/20/2017.
+ * Provides container for User information.
  */
 public class User {
     private String displayName;

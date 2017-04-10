@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Created by Administrator on 3/22/2017.
+ * Provides routes for root and main user display pages.
  */
 @Controller
 public class MainController {
@@ -35,7 +35,8 @@ public class MainController {
             value = "/",
             method = RequestMethod.GET
     )
-    @ResponseBody ModelAndView getRoot() {
+    @ResponseBody
+    ModelAndView getRoot() {
         return new ModelAndView("redirect:login");
     }
 

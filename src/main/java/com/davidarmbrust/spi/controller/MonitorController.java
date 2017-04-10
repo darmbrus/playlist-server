@@ -14,8 +14,6 @@ import org.springframework.web.client.RestTemplate;
 
 /**
  * Provides endpoints for application monitoring
- *
- * @author David Armbrust
  */
 @Controller
 public class MonitorController {

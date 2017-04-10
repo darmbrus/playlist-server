@@ -9,7 +9,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * Created by Administrator on 4/3/2017.
+ * Provides functions for playlist manipulation.
  */
 @Service
 public class PlaylistService {
@@ -45,10 +45,10 @@ public class PlaylistService {
         int listSize = albumList.size();
         List<Album> shuffledList = new ArrayList<>();
         Random random = new Random();
-        for(int i = 0; i < listSize; i++) {
-           int randomIndex = random.nextInt(listSize - i);
-           shuffledList.add(albumList.get(randomIndex));
-           albumList.remove(randomIndex);
+        for (int i = 0; i < listSize; i++) {
+            int randomIndex = random.nextInt(listSize - i);
+            shuffledList.add(albumList.get(randomIndex));
+            albumList.remove(randomIndex);
         }
         return shuffledList;
     }

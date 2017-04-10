@@ -73,7 +73,7 @@ public class Token {
 
     public boolean isValid() {
         long expiresInMillis = expiresIn * 1000;
-        return  (created.getTime() + expiresInMillis > new Date().getTime());
+        return (created.getTime() + expiresInMillis > new Date().getTime());
     }
 
     @Override

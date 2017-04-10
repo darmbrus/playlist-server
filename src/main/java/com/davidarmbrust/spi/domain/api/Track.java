@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.Arrays;
 
 /**
- * Created by Administrator on 3/20/2017.
+ * Provides container for Track information.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Track {

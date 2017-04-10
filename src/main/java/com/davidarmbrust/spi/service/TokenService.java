@@ -37,11 +37,11 @@ public class TokenService {
     }
 
     public Session updateSessionToken(Session session) {
-        if(session.getToken() == null) {
+        if (session.getToken() == null) {
             log.debug("Session token is null, returning new token");
             session.setToken(getNewToken(session));
             return session;
-        } else if(session.getToken().isValid()) {
+        } else if (session.getToken().isValid()) {
             log.debug("Session is valid, returning original");
             return session;
         } else {
@@ -76,7 +76,7 @@ public class TokenService {
             HttpEntity entity = new HttpEntity<>(body, headers);
             ResponseEntity<Token> response = restTemplate.exchange(TOKEN_URL, HttpMethod.POST, entity, Token.class);
             Token token = response.getBody();
-            if (token.getRefreshToken() == null){
+            if (token.getRefreshToken() == null) {
                 token.setRefreshToken(session.getToken().getRefreshToken());
             }
             return token;
@@ -87,7 +87,7 @@ public class TokenService {
     }
 
     private HttpHeaders getTokenHeaders() {
-        HttpHeaders headers =  new HttpHeaders() {{
+        HttpHeaders headers = new HttpHeaders() {{
             set(AUTHORIZATION, "Basic " + new String(Base64.getEncoder().encode((spotifyProperties.getClientId() + ":" + spotifyProperties.getClientSecret()).getBytes())));
         }};
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);

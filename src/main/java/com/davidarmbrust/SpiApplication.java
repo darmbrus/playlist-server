@@ -10,7 +10,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @PropertySource(value = "file:secure.properties")
 public class SpiApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(SpiApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(SpiApplication.class, args);
+    }
 }

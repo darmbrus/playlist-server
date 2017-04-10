@@ -22,8 +22,6 @@ import java.util.Map;
 
 /**
  * Provides OAuthentication for Spotify
- *
- * @author David Armbrust
  */
 @Controller
 public class SpotifyAuthController {
@@ -72,7 +70,7 @@ public class SpotifyAuthController {
             method = RequestMethod.GET
     )
     @ResponseBody
-    public ModelAndView getCallback( HttpServletRequest request, HttpServletResponse response ) {
+    public ModelAndView getCallback(HttpServletRequest request, HttpServletResponse response) {
         String code = request.getParameter("code");
         log.debug("Got to callback: codeSize = " + code.length());
         Session session = new Session(code);

@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Provides a container for incremental playlist responses
+ * Provides a container for incremental object responses.
  */
 public class Paging {
     private String href;

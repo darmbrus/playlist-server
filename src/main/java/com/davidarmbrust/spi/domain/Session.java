@@ -5,7 +5,7 @@ import com.davidarmbrust.spi.domain.api.User;
 import java.util.Date;
 
 /**
- * Created by Administrator on 3/22/2017.
+ * Provides container for user session storage.
  */
 public class Session {
     private String code;

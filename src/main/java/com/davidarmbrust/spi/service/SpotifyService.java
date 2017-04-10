@@ -14,7 +14,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * Provides access to Spotify API
+ * Provides access to Spotify API objects.
  */
 @Service
 @SuppressWarnings("unchecked")
@@ -76,7 +76,7 @@ public class SpotifyService {
         String destination = ROOT_URL + API_VERSION + "/users/" + userId + "/playlists/" + playlistId + "/tracks";
         HttpEntity entity = new HttpEntity(getAuthHeaders(session));
         Paging response = restTemplate.exchange(destination, HttpMethod.GET, entity, Paging.class).getBody();
-        List<PlaylistTrack> playlistTracks =  resolvePaging(response, PlaylistTrack.class, session);
+        List<PlaylistTrack> playlistTracks = resolvePaging(response, PlaylistTrack.class, session);
         log.debug("Playlist tracks found: " + playlistTracks.size());
         return playlistTracks.stream()
                 .map(PlaylistTrack::getTrack)
@@ -114,7 +114,7 @@ public class SpotifyService {
      * Posts all tracks in an album to a playlist.
      */
     public void addAlbumToPlaylist(Album album, Playlist playlist, Session session) {
-        String destination = ROOT_URL + API_VERSION + "/users/" + session.getUser().getId() + "/playlists/"+ playlist.getId() +"/tracks";
+        String destination = ROOT_URL + API_VERSION + "/users/" + session.getUser().getId() + "/playlists/" + playlist.getId() + "/tracks";
         List<String> trackList = album.buildTrackUriList();
         HashMap<String, List<String>> body = new HashMap<>();
         body.put("uris", trackList);

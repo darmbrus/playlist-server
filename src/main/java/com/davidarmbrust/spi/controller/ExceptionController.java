@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * Created by Administrator on 3/20/2017.
+ * Provides web exception handling.
  */
 @ControllerAdvice
 public class ExceptionController {

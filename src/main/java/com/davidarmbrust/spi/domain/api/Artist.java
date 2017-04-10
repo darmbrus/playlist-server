@@ -1,10 +1,9 @@
 package com.davidarmbrust.spi.domain.api;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
- * Provides container for Artist information
+ * Provides container for Artist information.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Artist {
