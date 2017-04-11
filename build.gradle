@@ -14,7 +14,8 @@ apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
 
-def swaggerVersion = "2.0.2"
+def freemarkerVersion='2.3.23'
+def springContextVersion='4.3.7.RELEASE'
 
 jar {
 	baseName = 'spi'
@@ -28,12 +29,9 @@ repositories {
 }
 
 dependencies {
-	compile('org.springframework.boot:spring-boot-starter-web')
+	compile('org.springframework.boot:spring-boot-starter-web:' + springBootVersion)
+	compile group: 'org.springframework', name: 'spring-context-support', version: springContextVersion
+	compile group: 'org.freemarker', name: 'freemarker', version: freemarkerVersion
 
-	compile group: 'org.springframework', name: 'spring-context-support'
-
-	// https://mvnrepository.com/artifact/org.freemarker/freemarker
-	compile group: 'org.freemarker', name: 'freemarker', version: '2.3.23'
-
-	testCompile('org.springframework.boot:spring-boot-starter-test')
+	testCompile('org.springframework.boot:spring-boot-starter-test:' + springBootVersion)
 }
