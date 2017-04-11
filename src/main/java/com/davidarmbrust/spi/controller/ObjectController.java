@@ -167,20 +167,4 @@ public class ObjectController {
         return new ModelAndView("redirect:getPlaylists");
     }
 
-    @RequestMapping(
-            value = "/buildDiscoverWeekly",
-            method = RequestMethod.GET
-    )
-    @ResponseBody
-    public ModelAndView buildDiscoverWeekly(HttpServletRequest request) {
-        log.trace("Hit /buildDiscoverWeekly");
-        Session session = sessionUtility.getSession(request);
-        List<Track> tracks = spotifyService.getDiscoverWeeklyTracks(session, spotifyProperties.getDiscoverWeeklyId());
-        List<Album> albums = playlistService.getUniqueAlbumList(tracks);
-        Playlist newPlaylist = spotifyService.createUserPlaylist("new Discover", session);
-        for (Album album : albums) {
-            spotifyService.addAlbumToPlaylist(album, newPlaylist, session);
-        }
-        return new ModelAndView("redirect:getPlaylists");
-    }
 }

@@ -94,6 +94,15 @@ public class SpotifyService {
     }
 
     /**
+     * Retrieves a playlist by ID for a user from Spotify.
+     */
+    public Playlist getUserPlaylist(Session session, String id) {
+        String destination = ROOT_URL + API_VERSION + "/users/" + session.getUser().getId() + "/playlists/" + id;
+        HttpEntity entity = new HttpEntity(getAuthHeaders(session));
+        return restTemplate.exchange(destination, HttpMethod.GET, entity, Playlist.class).getBody();
+    }
+
+    /**
      * Posts new playlist to a users account.
      */
     public Playlist createUserPlaylist(String name, Session session) {

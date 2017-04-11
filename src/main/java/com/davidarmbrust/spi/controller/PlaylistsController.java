@@ -29,6 +29,7 @@ import java.util.List;
 public class PlaylistsController {
     private static final Logger log = LoggerFactory.getLogger(PlaylistsController.class);
 
+
     private TokenService tokenService;
     private SessionUtility sessionUtility;
     private SpotifyService spotifyService;
@@ -80,5 +81,24 @@ public class PlaylistsController {
         Session session = sessionUtility.getSession(request);
         session = tokenService.updateSessionToken(session);
         return spotifyService.getPlaylistTracks(session, id);
+    }
+
+    @RequestMapping(
+            value = "/{id}/random",
+            method = RequestMethod.GET
+    )
+    @ResponseBody
+    public String getRandomAlbumListFromPlaylist(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            @PathVariable String id
+    ) {
+        log.trace("Hit GET /playlists/" + id + "/random");
+        Session session = sessionUtility.getSession(request);
+        session = tokenService.updateSessionToken(session);
+        playlistService.createRandomPlaylist(session, id);
+        return "{" +
+                "'complete'" + ":" + "'true'" +
+                "}";
     }
 }

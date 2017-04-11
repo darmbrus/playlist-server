@@ -22,41 +22,27 @@ import java.util.List;
 public class AutomationService {
     private static final Logger log = LoggerFactory.getLogger(AutomationService.class);
 
-    private static final ThreadLocal<SimpleDateFormat> dateFormat = ThreadLocal.withInitial(() -> new SimpleDateFormat("yyyy-MM-dd"));
-
     private boolean sessionSet = false;
     private Session session;
 
     private TokenService tokenService;
-    private SpotifyService spotifyService;
-    private SpotifyProperties spotifyProperties;
     private PlaylistService playlistService;
 
     @Autowired
     public AutomationService(
             TokenService tokenService,
-            SpotifyService spotifyService,
-            SpotifyProperties spotifyProperties,
             PlaylistService playlistService
     ) {
         this.tokenService = tokenService;
-        this.spotifyService = spotifyService;
-        this.spotifyProperties = spotifyProperties;
         this.playlistService = playlistService;
     }
 
     @Scheduled(cron = "0 0 2 ? * MON")
     public void runSchedule() {
         if (sessionSet) {
-            String playlistName = dateFormat.get().format(new Date()) + " - Discover Weekly";
             log.debug("Session set: " + session.toString());
             session = tokenService.updateSessionToken(session);
-            List<Track> tracks = spotifyService.getDiscoverWeeklyTracks(session, spotifyProperties.getDiscoverWeeklyId());
-            List<Album> albums = playlistService.getUniqueAlbumList(tracks);
-            Playlist newPlaylist = spotifyService.createUserPlaylist(playlistName, session);
-            for (Album album : albums) {
-                spotifyService.addAlbumToPlaylist(album, newPlaylist, session);
-            }
+            playlistService.createRandomDiscoverWeekly(session);
         } else {
             log.error("Session not set");
         }
