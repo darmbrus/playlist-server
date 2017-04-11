@@ -1,6 +1,6 @@
 package com.davidarmbrust.spi.service;
 
-import com.davidarmbrust.spi.domain.*;
+import com.davidarmbrust.spi.domain.Session;
 import com.davidarmbrust.spi.domain.api.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -10,7 +10,8 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**

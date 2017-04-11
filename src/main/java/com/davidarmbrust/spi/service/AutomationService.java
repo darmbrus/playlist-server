@@ -1,19 +1,11 @@
 package com.davidarmbrust.spi.service;
 
-import com.davidarmbrust.spi.config.SpotifyProperties;
 import com.davidarmbrust.spi.domain.Session;
-import com.davidarmbrust.spi.domain.api.Album;
-import com.davidarmbrust.spi.domain.api.Playlist;
-import com.davidarmbrust.spi.domain.api.Track;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
 
 /**
  * Provides automated methods for logged in user.
