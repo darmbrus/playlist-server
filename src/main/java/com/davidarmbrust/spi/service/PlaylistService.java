@@ -32,6 +32,12 @@ public class PlaylistService {
         this.spotifyProperties = spotifyProperties;
     }
 
+    /**
+     * Creates a new playlist based off the track listing of the passed in playlist ID with
+     * a randomized order of full albums.
+     *
+     * @param id of the playlist that is to be used as the original track listing.
+     */
     public void createRandomPlaylist(Session session, String id) {
         List<Album> albums = this.getUniqueAlbumList(spotifyService.getPlaylistTracks(session, id));
         String playlistName = spotifyService.getUserPlaylist(session, id).getName();
@@ -41,6 +47,10 @@ public class PlaylistService {
         this.addAlbumListToPlaylist(session, albums, randomPlaylist);
     }
 
+    /**
+     * Creates a new playlist based off of the current discover weekly for the user with a
+     * randomized order of full albums.
+     */
     void createRandomDiscoverWeekly(Session session) {
         String playlistName = dateFormat.get().format(new Date()) + " - Discover Weekly";
         List<Track> tracks = spotifyService.getDiscoverWeeklyTracks(session, spotifyProperties.getDiscoverWeeklyId());
