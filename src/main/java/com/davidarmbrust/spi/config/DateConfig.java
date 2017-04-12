@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import java.util.Date;
 
 /**
- * Created by Administrator on 4/10/2017.
+ * Provides access to current date function.
  */
 @Configuration
 public class DateConfig {

@@ -1,5 +1,6 @@
 package com.davidarmbrust.spi.service;
 
+import com.davidarmbrust.spi.config.DateConfig;
 import com.davidarmbrust.spi.config.SpotifyProperties;
 import com.davidarmbrust.spi.domain.Session;
 import com.davidarmbrust.spi.domain.api.Album;
@@ -22,14 +23,17 @@ public class PlaylistService {
 
     private SpotifyService spotifyService;
     private SpotifyProperties spotifyProperties;
+    private DateConfig dateConfig;
 
     @Autowired
     public PlaylistService(
             SpotifyService spotifyService,
-            SpotifyProperties spotifyProperties
+            SpotifyProperties spotifyProperties,
+            DateConfig dateConfig
     ) {
         this.spotifyService = spotifyService;
         this.spotifyProperties = spotifyProperties;
+        this.dateConfig = dateConfig;
     }
 
     /**
@@ -42,7 +46,7 @@ public class PlaylistService {
         List<Album> albums = this.getUniqueAlbumList(spotifyService.getPlaylistTracks(session, id));
         String playlistName = spotifyService.getUserPlaylist(session, id).getName();
         albums = this.shuffleAlbumList(albums);
-        String today = dateFormat.get().format(new Date());
+        String today = dateFormat.get().format(dateConfig.getCurrentDate());
         Playlist randomPlaylist = spotifyService.createUserPlaylist(today + " - " + playlistName, session);
         this.addAlbumListToPlaylist(session, albums, randomPlaylist);
     }
@@ -52,7 +56,7 @@ public class PlaylistService {
      * randomized order of full albums.
      */
     void createRandomDiscoverWeekly(Session session) {
-        String playlistName = dateFormat.get().format(new Date()) + " - Discover Weekly";
+        String playlistName = dateFormat.get().format(dateConfig.getCurrentDate()) + " - Discover Weekly";
         List<Track> tracks = spotifyService.getDiscoverWeeklyTracks(session, spotifyProperties.getDiscoverWeeklyId());
         List<Album> albums = this.getUniqueAlbumList(tracks);
         Playlist newPlaylist = spotifyService.createUserPlaylist(playlistName, session);
