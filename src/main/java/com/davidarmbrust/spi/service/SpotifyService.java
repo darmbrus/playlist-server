@@ -55,6 +55,16 @@ public class SpotifyService {
         return response.getBody();
     }
 
+    public List<Album> getUserSavedAlbums(Session session) {
+        String destination = ROOT_URL + API_VERSION + "/me/albums";
+        HttpEntity entity = new HttpEntity(getAuthHeaders(session));
+        Paging response = restTemplate.exchange(destination, HttpMethod.GET, entity, Paging.class).getBody();
+        List<SavedAlbum> savedAlbums = resolvePaging(response, SavedAlbum.class, session);
+        return savedAlbums.stream()
+                .map(SavedAlbum::getAlbum)
+                .collect(Collectors.toList());
+    }
+
     /**
      * Retrieves a list of tracks for a given playlist for the current user.
      */
@@ -125,6 +135,9 @@ public class SpotifyService {
      */
     public void addAlbumToPlaylist(Album album, Playlist playlist, Session session) {
         String destination = ROOT_URL + API_VERSION + "/users/" + session.getUser().getId() + "/playlists/" + playlist.getId() + "/tracks";
+        if (album.getTracksList() == null) {
+            album = getAlbumById(album.getId());
+        }
         List<String> trackList = album.buildTrackUriList();
         HashMap<String, List<String>> body = new HashMap<>();
         body.put("uris", trackList);

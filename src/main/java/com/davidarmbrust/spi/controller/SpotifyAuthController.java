@@ -32,7 +32,7 @@ public class SpotifyAuthController {
     private TokenService tokenService;
     private AutomationService automationService;
     private static final String AUTHENTICATION_URL = "https://accounts.spotify.com/authorize";
-    private static final String SCOPE = "user-read-private playlist-modify-private";
+    private static final String SCOPE = "user-read-private playlist-modify-private user-library-read";
     private static final Logger log = LoggerFactory.getLogger(SpotifyAuthController.class);
 
     @Autowired

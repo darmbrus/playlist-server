@@ -171,4 +171,15 @@ public class ObjectController {
         return new ModelAndView("redirect:getPlaylists");
     }
 
+    @RequestMapping(
+            value = "/getUserAlbums",
+            method = RequestMethod.GET
+    )
+    @ResponseBody
+    public ModelAndView getUserAlbums(HttpServletRequest request, HttpServletResponse response) {
+        log.trace("Hit /getUserAlbums");
+        Session session = sessionUtility.getSession(request);
+        playlistService.createEntireLibraryPlaylist(session);
+        return new ModelAndView("redirect:getPlaylists");
+    }
 }

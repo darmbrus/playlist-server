@@ -37,6 +37,15 @@ public class PlaylistService {
     }
 
     /**
+     * Creates a single randomly organized playlist of a users current library.
+     */
+    public void createEntireLibraryPlaylist(Session session) {
+        List<Album> albums = spotifyService.getUserSavedAlbums(session);
+        Playlist playlist = spotifyService.createUserPlaylist(getPlaylistName("Library"), session);
+        addAlbumListToPlaylist(session, shuffleAlbumList(albums), playlist);
+    }
+
+    /**
      * Creates a new playlist based off the track listing of the passed in playlist ID with
      * a randomized order of full albums.
      *
@@ -46,8 +55,7 @@ public class PlaylistService {
         List<Album> albums = this.getUniqueAlbumList(spotifyService.getPlaylistTracks(session, id));
         String playlistName = spotifyService.getUserPlaylist(session, id).getName();
         albums = this.shuffleAlbumList(albums);
-        String today = dateFormat.get().format(dateConfig.getCurrentDate());
-        Playlist randomPlaylist = spotifyService.createUserPlaylist(today + " - " + playlistName, session);
+        Playlist randomPlaylist = spotifyService.createUserPlaylist(getPlaylistName(playlistName), session);
         this.addAlbumListToPlaylist(session, albums, randomPlaylist);
     }
 
@@ -56,7 +64,7 @@ public class PlaylistService {
      * randomized order of full albums.
      */
     void createRandomDiscoverWeekly(Session session) {
-        String playlistName = dateFormat.get().format(dateConfig.getCurrentDate()) + " - Discover Weekly";
+        String playlistName = getPlaylistName("Discover Weekly");
         List<Track> tracks = spotifyService.getDiscoverWeeklyTracks(session, spotifyProperties.getDiscoverWeeklyId());
         List<Album> albums = this.getUniqueAlbumList(tracks);
         Playlist newPlaylist = spotifyService.createUserPlaylist(playlistName, session);
@@ -98,5 +106,12 @@ public class PlaylistService {
      */
     private void addAlbumListToPlaylist(Session session, List<Album> albumList, Playlist playlist) {
         albumList.forEach(album -> spotifyService.addAlbumToPlaylist(album, playlist, session));
+    }
+
+    /**
+     * Formats the input name with date and dash for standard playlist naming.
+     */
+    private String getPlaylistName(String name) {
+        return dateFormat.get().format(dateConfig.getCurrentDate()) + " - " + name;
     }
 }
