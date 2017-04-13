@@ -36,8 +36,14 @@ public class MainController {
             method = RequestMethod.GET
     )
     @ResponseBody
-    ModelAndView getRoot() {
-        return new ModelAndView("redirect:login");
+    ModelAndView getRoot(
+            HttpServletRequest request
+    ) {
+        if (sessionUtility.getSession(request) == null) {
+            return new ModelAndView("redirect:login");
+        } else {
+            return new ModelAndView("redirect:main");
+        }
     }
 
     @RequestMapping(
@@ -51,8 +57,8 @@ public class MainController {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName(templateName);
         modelAndView.setStatus(HttpStatus.OK);
-        modelAndView.addObject("session", sessionUtility.getSession(request));
-        modelAndView.addObject("sessionCreatedAt", sessionUtility.getSession(request).getCreatedAt().toString());
+        modelAndView.addObject("sessionSet", automationService.isSessionSet() ? "true" : "false");
+        modelAndView.addObject("sessionCreatedAt", automationService.getSessionSetDate().toString());
         return modelAndView;
     }
 

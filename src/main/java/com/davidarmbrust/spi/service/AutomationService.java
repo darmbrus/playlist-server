@@ -1,11 +1,14 @@
 package com.davidarmbrust.spi.service;
 
+import com.davidarmbrust.spi.config.DateConfig;
 import com.davidarmbrust.spi.domain.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+
+import java.util.Date;
 
 /**
  * Provides automated methods for logged in user.
@@ -17,16 +20,21 @@ public class AutomationService {
     private boolean sessionSet = false;
     private Session session;
 
-    private TokenService tokenService;
-    private PlaylistService playlistService;
+    private Date sessionSetDate;
 
+    private DateConfig dateConfig;
+    private TokenService tokenService;
+
+    private PlaylistService playlistService;
     @Autowired
     public AutomationService(
             TokenService tokenService,
-            PlaylistService playlistService
+            PlaylistService playlistService,
+            DateConfig dateConfig
     ) {
         this.tokenService = tokenService;
         this.playlistService = playlistService;
+        this.dateConfig = dateConfig;
     }
 
     @Scheduled(cron = "0 0 2 ? * MON")
@@ -41,7 +49,18 @@ public class AutomationService {
     }
 
     public void setSession(Session session) {
-        this.sessionSet = true;
-        this.session = session;
+        if(!this.sessionSet) {
+            this.sessionSet = true;
+            this.sessionSetDate = dateConfig.getCurrentDate();
+            this.session = session;
+        }
+    }
+
+    public Date getSessionSetDate() {
+        return sessionSetDate;
+    }
+
+    public boolean isSessionSet() {
+        return sessionSet;
     }
 }

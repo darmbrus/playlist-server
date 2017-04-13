@@ -172,11 +172,11 @@ public class ObjectController {
     }
 
     @RequestMapping(
-            value = "/getUserAlbums",
+            value = "/createLibrary",
             method = RequestMethod.GET
     )
     @ResponseBody
-    public ModelAndView getUserAlbums(HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView getCreateLibrary(HttpServletRequest request, HttpServletResponse response) {
         log.trace("Hit /getUserAlbums");
         Session session = sessionUtility.getSession(request);
         playlistService.createEntireLibraryPlaylist(session);
