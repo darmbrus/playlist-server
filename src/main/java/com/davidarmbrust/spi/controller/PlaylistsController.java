@@ -62,7 +62,7 @@ public class PlaylistsController {
         session = tokenService.updateSessionToken(session);
         List<Playlist> playlists = spotifyService.getUserPlaylists(session);
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("playlists/index");
+        modelAndView.setViewName("listPlaylists");
         modelAndView.addObject("listObject", playlists);
         return modelAndView;
     }
