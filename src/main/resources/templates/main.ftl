@@ -4,5 +4,6 @@
 <ul>
     <li>Automation session set: ${sessionSet}</li>
     <li>Session created at: ${sessionCreatedAt}</li>
+    <li>Version: ${version}</li>
 </ul>
 </@page.pageTemplate>

@@ -1,5 +1,6 @@
 package com.davidarmbrust.spi.controller;
 
+import com.davidarmbrust.spi.config.AppConfig;
 import com.davidarmbrust.spi.service.AutomationService;
 import com.davidarmbrust.spi.utility.SessionUtility;
 import org.slf4j.Logger;
@@ -59,6 +60,7 @@ public class MainController {
         modelAndView.setStatus(HttpStatus.OK);
         modelAndView.addObject("sessionSet", automationService.isSessionSet() ? "true" : "false");
         modelAndView.addObject("sessionCreatedAt", automationService.getSessionSetDate().toString());
+        modelAndView.addObject("version", AppConfig.APP_VERSION);
         return modelAndView;
     }
 
