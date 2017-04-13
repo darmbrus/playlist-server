@@ -38,6 +38,12 @@ header, footer {
     color: #F5F3F5
 }
 
+footer {
+  font-size: small;
+  text-align: right;
+  padding-right: 10px;
+}
+
 /* Too narrow to support three columns */
 @media all and (max-width: 640px) {
     #main, #page {
