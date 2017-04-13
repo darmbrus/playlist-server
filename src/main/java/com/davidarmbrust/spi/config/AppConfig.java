@@ -14,7 +14,7 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 @Configuration
 public class AppConfig {
 
-    public static String APP_VERSION = "0.1.2";
+    public static String APP_VERSION = "0.1.3";
 
     private static Logger log = LoggerFactory.getLogger(AppConfig.class);
 
