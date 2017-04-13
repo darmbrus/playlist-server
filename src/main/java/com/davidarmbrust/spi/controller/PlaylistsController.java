@@ -97,8 +97,6 @@ public class PlaylistsController {
         Session session = sessionUtility.getSession(request);
         session = tokenService.updateSessionToken(session);
         playlistService.createRandomPlaylist(session, id);
-        return "{" +
-                "'complete'" + ":" + "'true'" +
-                "}";
+        return "complete";
     }
 }
