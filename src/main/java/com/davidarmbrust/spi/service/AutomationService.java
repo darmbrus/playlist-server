@@ -48,6 +48,10 @@ public class AutomationService {
         }
     }
 
+    public Session getSession() {
+        return this.session;
+    }
+
     public void setSession(Session session) {
         if(!this.sessionSet) {
             this.sessionSet = true;
