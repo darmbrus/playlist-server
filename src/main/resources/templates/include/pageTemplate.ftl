@@ -3,7 +3,7 @@
 <html>
 <head>
     <meta charset="UTF8">
-    <title>Spotify Interface</title>
+    <title>playlist server</title>
     <link rel="stylesheet" type="text/css" href="assets/css/style.css"/>
     <link rel="stylesheet" type="text/css" href="../assets/css/style.css"/>
 </head>

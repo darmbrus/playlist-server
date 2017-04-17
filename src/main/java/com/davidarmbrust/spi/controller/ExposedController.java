@@ -1,9 +1,8 @@
 package com.davidarmbrust.spi.controller;
 
-import com.davidarmbrust.spi.config.SpotifyProperties;
 import com.davidarmbrust.spi.domain.Session;
-import com.davidarmbrust.spi.domain.Token;
 import com.davidarmbrust.spi.domain.api.Playlist;
+import com.davidarmbrust.spi.domain.api.User;
 import com.davidarmbrust.spi.service.AutomationService;
 import com.davidarmbrust.spi.service.PlaylistService;
 import com.davidarmbrust.spi.service.SpotifyService;
@@ -12,9 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,31 +22,57 @@ import java.util.List;
 @RequestMapping(value = "/exposed")
 public class ExposedController {
     private static final Logger log = LoggerFactory.getLogger(ExposedController.class);
+    private static final String REACT_APP = "http://localhost:3000";
 
     private AutomationService automationService;
     private TokenService tokenService;
     private SpotifyService spotifyService;
+    private PlaylistService playlistService;
 
     @Autowired
     public ExposedController(
             AutomationService automationService,
             TokenService tokenService,
-            SpotifyService spotifyService
+            SpotifyService spotifyService,
+            PlaylistService playlistService
     ) {
         this.automationService = automationService;
         this.tokenService = tokenService;
         this.spotifyService = spotifyService;
+        this.playlistService = playlistService;
     }
 
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = REACT_APP)
     @RequestMapping(
-            value = "/playlists"
+            value = "/user",
+            method = RequestMethod.GET
+    )
+    @ResponseBody
+    public User getUser() {
+        Session session = getSession();
+        return session.getUser();
+    }
 
+    @CrossOrigin(origins = REACT_APP)
+    @RequestMapping(
+            value = "/playlists",
+            method = RequestMethod.GET
     )
     @ResponseBody
     public List<Playlist> getPlaylists() {
         Session session = getSession();
         return spotifyService.getUserPlaylists(session);
+    }
+
+    @CrossOrigin(origins = REACT_APP)
+    @RequestMapping(
+            value = "/playlists/{id}/random",
+            method = RequestMethod.POST
+    )
+    @ResponseBody
+    public void createRandomPlaylist(@PathVariable String id) {
+        Session session = getSession();
+        playlistService.createRandomPlaylist(session, id);
     }
 
     private Session getSession() {
