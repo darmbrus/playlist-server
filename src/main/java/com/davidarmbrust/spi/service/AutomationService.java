@@ -1,6 +1,6 @@
 package com.davidarmbrust.spi.service;
 
-import com.davidarmbrust.spi.config.DateConfig;
+import com.davidarmbrust.spi.utility.DateUtility;
 import com.davidarmbrust.spi.domain.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +22,7 @@ public class AutomationService {
 
     private Date sessionSetDate;
 
-    private DateConfig dateConfig;
+    private DateUtility dateUtility;
     private TokenService tokenService;
 
     private PlaylistService playlistService;
@@ -30,11 +30,11 @@ public class AutomationService {
     public AutomationService(
             TokenService tokenService,
             PlaylistService playlistService,
-            DateConfig dateConfig
+            DateUtility dateUtility
     ) {
         this.tokenService = tokenService;
         this.playlistService = playlistService;
-        this.dateConfig = dateConfig;
+        this.dateUtility = dateUtility;
     }
 
     @Scheduled(cron = "0 0 2 ? * MON")
@@ -51,7 +51,7 @@ public class AutomationService {
     public void setSession(Session session) {
         if(!this.sessionSet) {
             this.sessionSet = true;
-            this.sessionSetDate = dateConfig.getCurrentDate();
+            this.sessionSetDate = dateUtility.getCurrentDate();
             this.session = session;
         }
     }

@@ -1,6 +1,6 @@
 package com.davidarmbrust.spi.service;
 
-import com.davidarmbrust.spi.config.DateConfig;
+import com.davidarmbrust.spi.utility.DateUtility;
 import com.davidarmbrust.spi.config.SpotifyProperties;
 import com.davidarmbrust.spi.domain.Session;
 import com.davidarmbrust.spi.domain.api.Album;
@@ -23,17 +23,17 @@ public class PlaylistService {
 
     private SpotifyService spotifyService;
     private SpotifyProperties spotifyProperties;
-    private DateConfig dateConfig;
+    private DateUtility dateUtility;
 
     @Autowired
     public PlaylistService(
             SpotifyService spotifyService,
             SpotifyProperties spotifyProperties,
-            DateConfig dateConfig
+            DateUtility dateUtility
     ) {
         this.spotifyService = spotifyService;
         this.spotifyProperties = spotifyProperties;
-        this.dateConfig = dateConfig;
+        this.dateUtility = dateUtility;
     }
 
     /**
@@ -112,6 +112,6 @@ public class PlaylistService {
      * Formats the input name with date and dash for standard playlist naming.
      */
     private String getPlaylistName(String name) {
-        return dateFormat.get().format(dateConfig.getCurrentDate()) + " - " + name;
+        return dateFormat.get().format(dateUtility.getCurrentDate()) + " - " + name;
     }
 }
