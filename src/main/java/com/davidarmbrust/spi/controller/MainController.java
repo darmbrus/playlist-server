@@ -1,6 +1,7 @@
 package com.davidarmbrust.spi.controller;
 
 import com.davidarmbrust.spi.config.AppConfig;
+import com.davidarmbrust.spi.config.SpotifyProperties;
 import com.davidarmbrust.spi.service.AutomationService;
 import com.davidarmbrust.spi.utility.SessionUtility;
 import org.slf4j.Logger;
@@ -25,11 +26,17 @@ public class MainController {
     private static final Logger log = LoggerFactory.getLogger(MainController.class);
     private SessionUtility sessionUtility;
     private AutomationService automationService;
+    private SpotifyProperties spotifyProperties;
 
     @Autowired
-    public MainController(SessionUtility sessionUtility, AutomationService automationService) {
+    public MainController(
+            SessionUtility sessionUtility,
+            AutomationService automationService,
+            SpotifyProperties spotifyProperties
+    ) {
         this.sessionUtility = sessionUtility;
         this.automationService = automationService;
+        this.spotifyProperties = spotifyProperties;
     }
 
     @RequestMapping(
@@ -42,6 +49,8 @@ public class MainController {
     ) {
         if (sessionUtility.getSession(request) == null) {
             return new ModelAndView("redirect:login");
+        } else if (spotifyProperties.useApp()) {
+            return new ModelAndView("redirect:main");
         } else {
             return new ModelAndView("redirect:main");
         }

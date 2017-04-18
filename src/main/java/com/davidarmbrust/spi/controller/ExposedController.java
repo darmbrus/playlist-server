@@ -49,6 +49,7 @@ public class ExposedController {
     )
     @ResponseBody
     public User getUser() {
+        log.info("Hit /exposed/user");
         Session session = getSession();
         return session.getUser();
     }
@@ -60,6 +61,7 @@ public class ExposedController {
     )
     @ResponseBody
     public List<Playlist> getPlaylists() {
+        log.info("Hit /exposed/playlists");
         Session session = getSession();
         return spotifyService.getUserPlaylists(session);
     }
@@ -73,6 +75,7 @@ public class ExposedController {
     public void createRandomPlaylist(@PathVariable String id) {
         Session session = getSession();
         playlistService.createRandomPlaylist(session, id);
+        log.info("Hit /exposed/playlists/" + id + "/random");
     }
 
     private Session getSession() {

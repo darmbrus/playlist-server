@@ -22,6 +22,24 @@ public class SpotifyProperties {
     private String callbackUrl;
     private String code;
     private String discoverWeeklyId;
+    private boolean app;
+    private String address;
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public boolean useApp() {
+        return app;
+    }
+
+    public void setApp(boolean app) {
+        this.app = app;
+    }
 
     public String getClientId() {
         return clientId;

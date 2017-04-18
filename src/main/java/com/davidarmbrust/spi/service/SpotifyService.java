@@ -126,7 +126,7 @@ public class SpotifyService {
         body.put("collaborative", "false");
         HttpEntity<Playlist> entity = new HttpEntity(body, headers);
         Playlist playlist = restTemplate.exchange(destination, HttpMethod.POST, entity, Playlist.class).getBody();
-        log.debug("Playlist created: " + playlist.getName());
+        log.info("Playlist created: " + playlist.getName());
         return playlist;
     }
 
