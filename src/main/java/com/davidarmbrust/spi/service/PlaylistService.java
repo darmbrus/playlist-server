@@ -1,11 +1,11 @@
 package com.davidarmbrust.spi.service;
 
-import com.davidarmbrust.spi.utility.DateUtility;
 import com.davidarmbrust.spi.config.SpotifyProperties;
 import com.davidarmbrust.spi.domain.Session;
 import com.davidarmbrust.spi.domain.api.Album;
 import com.davidarmbrust.spi.domain.api.Playlist;
 import com.davidarmbrust.spi.domain.api.Track;
+import com.davidarmbrust.spi.utility.DateUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
