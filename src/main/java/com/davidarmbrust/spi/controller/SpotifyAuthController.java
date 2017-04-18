@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -69,7 +68,7 @@ public class SpotifyAuthController {
             method = RequestMethod.GET
     )
     @ResponseBody
-    public ModelAndView getLogin(HttpServletRequest request, HttpServletResponse re) {
+    public ModelAndView getLogin() {
         log.trace("Reached Login");
         return new ModelAndView("redirect:" + AUTHENTICATION_URL, getOAuthQueryParams());
     }
@@ -79,7 +78,7 @@ public class SpotifyAuthController {
             method = RequestMethod.GET
     )
     @ResponseBody
-    public ModelAndView getCallback(HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView getCallback(HttpServletRequest request) {
         String code = request.getParameter("code");
         log.debug("Got to callback: codeSize = " + code.length());
         Session session = new Session(code);

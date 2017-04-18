@@ -12,7 +12,7 @@ import org.springframework.web.client.RestTemplate;
 @Configuration
 public class AppConfig {
 
-    public static String APP_VERSION = "0.1.4";
+    public static String APP_VERSION = "0.1.5";
 
     private static Logger log = LoggerFactory.getLogger(AppConfig.class);
 
