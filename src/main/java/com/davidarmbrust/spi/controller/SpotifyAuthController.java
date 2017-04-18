@@ -51,18 +51,27 @@ public class SpotifyAuthController {
     }
 
     @RequestMapping(
+            value = "/",
+            method = RequestMethod.GET
+    )
+    @ResponseBody
+    public ModelAndView getRoot(HttpServletRequest request) {
+        Session session = sessionUtility.getSession(request);
+        if (session != null) {
+            return new ModelAndView("index.html");
+        } else {
+            return new ModelAndView("redirect:login");
+        }
+    }
+
+    @RequestMapping(
             value = "/login",
             method = RequestMethod.GET
     )
     @ResponseBody
     public ModelAndView getLogin(HttpServletRequest request, HttpServletResponse re) {
         log.trace("Reached Login");
-        Session session = sessionUtility.getSession(request);
-        if (session != null) {
-            return new ModelAndView("redirect:main");
-        } else {
-            return new ModelAndView("redirect:" + AUTHENTICATION_URL, getOAuthQueryParams());
-        }
+        return new ModelAndView("redirect:" + AUTHENTICATION_URL, getOAuthQueryParams());
     }
 
     @RequestMapping(
@@ -79,7 +88,7 @@ public class SpotifyAuthController {
         request.getSession().setAttribute("session", session);
         automationService.setSession(session);
 
-        return new ModelAndView("redirect:main");
+        return new ModelAndView("redirect:/");
     }
 
     private Map<String, String> getOAuthQueryParams() {

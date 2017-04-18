@@ -1,7 +1,7 @@
 package com.davidarmbrust.spi.service;
 
-import com.davidarmbrust.spi.utility.DateUtility;
 import com.davidarmbrust.spi.domain.Session;
+import com.davidarmbrust.spi.utility.DateUtility;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +26,7 @@ public class AutomationService {
     private TokenService tokenService;
 
     private PlaylistService playlistService;
+
     @Autowired
     public AutomationService(
             TokenService tokenService,
@@ -48,8 +49,12 @@ public class AutomationService {
         }
     }
 
+    public Session getSession() {
+        return this.session;
+    }
+
     public void setSession(Session session) {
-        if(!this.sessionSet) {
+        if (!this.sessionSet) {
             this.sessionSet = true;
             this.sessionSetDate = dateUtility.getCurrentDate();
             this.session = session;
