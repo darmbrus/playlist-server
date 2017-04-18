@@ -74,7 +74,7 @@ public class ExposedController {
     @ResponseBody
     public void createRandomPlaylist(@PathVariable String id) {
         Session session = getSession();
-        playlistService.createRandomPlaylist(session, id);
+//        playlistService.createRandomPlaylist(session, id);
         log.info("Hit /exposed/playlists/" + id + "/random");
     }
 
