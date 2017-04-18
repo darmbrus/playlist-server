@@ -1,8 +1,10 @@
 package com.davidarmbrust.spi.controller;
 
+import com.davidarmbrust.spi.config.AppConfig;
 import com.davidarmbrust.spi.domain.Session;
 import com.davidarmbrust.spi.domain.api.Playlist;
 import com.davidarmbrust.spi.domain.api.User;
+import com.davidarmbrust.spi.service.AutomationService;
 import com.davidarmbrust.spi.service.PlaylistService;
 import com.davidarmbrust.spi.service.SpotifyService;
 import com.davidarmbrust.spi.utility.SessionUtility;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -29,16 +32,32 @@ public class ApiController {
     private SpotifyService spotifyService;
     private PlaylistService playlistService;
     private SessionUtility sessionUtility;
+    private AutomationService automationService;
 
     @Autowired
     public ApiController(
             SpotifyService spotifyService,
             PlaylistService playlistService,
-            SessionUtility sessionUtility
+            SessionUtility sessionUtility,
+            AutomationService automationService
     ) {
         this.spotifyService = spotifyService;
         this.playlistService = playlistService;
         this.sessionUtility = sessionUtility;
+        this.automationService = automationService;
+    }
+
+    @RequestMapping(
+            value = "/info",
+            method = RequestMethod.GET
+    )
+    @ResponseBody
+    public HashMap<String, String> getInfo() {
+        log.info("Hit /api/info");
+        HashMap<String, String > info = new HashMap<>();
+        info.put("version", AppConfig.APP_VERSION);
+        info.put("cached_user", automationService.getSession().getUser().getId());
+        return info;
     }
 
     @RequestMapping(
