@@ -16,6 +16,6 @@ public class ExceptionController {
     ResponseEntity<String> handleConflict(Exception ex, HttpServletRequest request) {
         HttpStatus httpStatus;
         httpStatus = HttpStatus.BAD_REQUEST;
-        return new ResponseEntity<String>("Exception: " + ex, httpStatus);
+        return new ResponseEntity<String>("Exception: " + ex.getMessage(), httpStatus);
     }
 }
