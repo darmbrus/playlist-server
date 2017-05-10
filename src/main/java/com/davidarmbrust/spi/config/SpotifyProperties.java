@@ -22,6 +22,7 @@ public class SpotifyProperties {
     private String callbackUrl;
     private String code;
     private String discoverWeeklyId;
+    private String releaseRadarId;
     private boolean app;
     private String address;
 
@@ -79,5 +80,13 @@ public class SpotifyProperties {
 
     public void setDiscoverWeeklyId(String discoverWeeklyId) {
         this.discoverWeeklyId = discoverWeeklyId;
+    }
+
+    public String getReleaseRadarId() {
+        return releaseRadarId;
+    }
+
+    public void setReleaseRadarId(String releaseRadarId) {
+        this.releaseRadarId = releaseRadarId;
     }
 }

@@ -39,11 +39,22 @@ public class AutomationService {
     }
 
     @Scheduled(cron = "0 0 2 ? * MON")
-    public void runSchedule() {
+    public void runMondaySchedule() {
         if (sessionSet) {
             log.debug("Session set: " + session.toString());
             session = tokenService.updateSessionToken(session);
             playlistService.createRandomDiscoverWeekly(session);
+        } else {
+            log.error("Session not set");
+        }
+    }
+
+    @Scheduled(cron = "0 0 2 ? * FRI")
+    public void runFridaySchedule() {
+        if(sessionSet) {
+            log.debug("Session set: " + session.toString());
+            session = tokenService.updateSessionToken(session);
+            playlistService.createRandomReleaseRadar(session);
         } else {
             log.error("Session not set");
         }

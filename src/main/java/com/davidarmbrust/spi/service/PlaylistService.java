@@ -25,6 +25,8 @@ public class PlaylistService {
     private SpotifyProperties spotifyProperties;
     private DateUtility dateUtility;
 
+    private static final String SPOTIFY_USER = "spotify";
+
     @Autowired
     public PlaylistService(
             SpotifyService spotifyService,
@@ -65,7 +67,19 @@ public class PlaylistService {
      */
     void createRandomDiscoverWeekly(Session session) {
         String playlistName = getPlaylistName("Discover Weekly");
-        List<Track> tracks = spotifyService.getDiscoverWeeklyTracks(session, spotifyProperties.getDiscoverWeeklyId());
+        List<Track> tracks = spotifyService.getPlaylistTracks(session, SPOTIFY_USER, spotifyProperties.getDiscoverWeeklyId());
+        List<Album> albums = this.getUniqueAlbumList(tracks);
+        Playlist newPlaylist = spotifyService.createUserPlaylist(playlistName, session);
+        this.addAlbumListToPlaylist(session, albums, newPlaylist);
+    }
+
+    /**
+     * Creates a new playlist based off of the current release radar for the user with a
+     * randomized order of full albums.
+     */
+    void createRandomReleaseRadar(Session session) {
+        String playlistName = getPlaylistName("Release Radar");
+        List<Track> tracks = spotifyService.getPlaylistTracks(session, SPOTIFY_USER, spotifyProperties.getReleaseRadarId());
         List<Album> albums = this.getUniqueAlbumList(tracks);
         Playlist newPlaylist = spotifyService.createUserPlaylist(playlistName, session);
         this.addAlbumListToPlaylist(session, albums, newPlaylist);
