@@ -11,6 +11,8 @@ import com.davidarmbrust.spi.utility.SessionUtility;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -62,7 +64,8 @@ public class ApiController {
 
     @RequestMapping(
             value = "/user",
-            method = RequestMethod.GET
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ResponseBody
     public User getUser(HttpServletRequest request) {
@@ -73,7 +76,8 @@ public class ApiController {
 
     @RequestMapping(
             value = "/playlists",
-            method = RequestMethod.GET
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ResponseBody
     public List<Playlist> getPlaylists(HttpServletRequest request) {
@@ -84,12 +88,35 @@ public class ApiController {
 
     @RequestMapping(
             value = "/playlists/{id}/random",
-            method = RequestMethod.POST
+            method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ResponseBody
     public void createRandomPlaylist(@PathVariable String id, HttpServletRequest request) {
         log.info("Hit /api/playlists/" + id + "/random");
         Session session = sessionUtility.getSession(request);
         playlistService.createRandomPlaylist(session, id);
+    }
+
+    @RequestMapping(
+            value = "/run_monday",
+            method = RequestMethod.GET
+    )
+    @ResponseBody
+    public HttpStatus runMondaySchedule(HttpServletRequest request) {
+        log.info("Hit /run_monday");
+        automationService.runMondaySchedule();
+        return HttpStatus.OK;
+    }
+
+    @RequestMapping(
+            value = "/run_friday",
+            method = RequestMethod.GET
+    )
+    @ResponseBody
+    public HttpStatus runFridaySchedule(HttpServletRequest request) {
+        log.info("Hit /run_friday");
+        automationService.runFridaySchedule();
+        return HttpStatus.OK;
     }
 }
