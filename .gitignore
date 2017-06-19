@@ -28,3 +28,4 @@ nbdist/
 .nb-gradle/
 /application.properties
 /src/main/resources/static/*
+/src/test/resources/test-secure.properties

@@ -35,10 +35,10 @@ public class SpotifyService {
         this.restTemplate = restTemplate;
     }
 
-    public Album getAlbumById(String albumId) {
+    public Album getAlbumById(Session session, String albumId) {
         String destination = ROOT_URL + API_VERSION + "/albums/" + albumId;
-
-        Album album = restTemplate.getForObject(destination, Album.class);
+        HttpEntity<Album> entity = new HttpEntity<>(getAuthHeaders(session));
+        Album album = restTemplate.exchange(destination, HttpMethod.GET, entity, Album.class).getBody();
         album.setTracksList(resolvePaging(album.getPagingTracks(), Track.class));
         log.debug("Album found: " + album.getName());
         return album;
@@ -128,7 +128,7 @@ public class SpotifyService {
     public void addAlbumToPlaylist(Album album, Playlist playlist, Session session) {
         String destination = ROOT_URL + API_VERSION + "/users/" + session.getUser().getId() + "/playlists/" + playlist.getId() + "/tracks";
         if (album.getTracksList() == null) {
-            album = getAlbumById(album.getId());
+            album = getAlbumById(session, album.getId());
         }
         List<String> trackList = album.buildTrackUriList();
         HashMap<String, List<String>> body = new HashMap<>();

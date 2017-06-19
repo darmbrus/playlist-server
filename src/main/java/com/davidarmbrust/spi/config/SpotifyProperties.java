@@ -1,7 +1,9 @@
 package com.davidarmbrust.spi.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotNull;
@@ -11,17 +13,23 @@ import javax.validation.constraints.NotNull;
  */
 @Configuration
 @Validated
-@ConfigurationProperties(prefix = "spotify")
+@ConfigurationProperties
 public class SpotifyProperties {
 
     @NotNull
+    @Value("${spotify.clientId}")
     private String clientId;
     @NotNull
+    @Value("${spotify.clientSecret}")
     private String clientSecret;
     @NotNull
+    @Value("${spotify.callbackUrl}")
     private String callbackUrl;
+    @Value("${test.code}")
     private String code;
+    @Value("${spotify.discoverWeeklyId}")
     private String discoverWeeklyId;
+    @Value("${spotify.releaseRadarId}")
     private String releaseRadarId;
     private boolean app;
     private String address;

@@ -6,6 +6,8 @@ import com.davidarmbrust.spi.domain.api.Album;
 import com.davidarmbrust.spi.domain.api.Playlist;
 import com.davidarmbrust.spi.domain.api.Track;
 import com.davidarmbrust.spi.utility.DateUtility;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +20,8 @@ import java.util.stream.Collectors;
  */
 @Service
 public class PlaylistService {
+
+    private static final Logger log = LoggerFactory.getLogger(PlaylistService.class);
 
     private static final ThreadLocal<SimpleDateFormat> dateFormat = ThreadLocal.withInitial(() -> new SimpleDateFormat("yyyy-MM-dd"));
 
@@ -54,7 +58,7 @@ public class PlaylistService {
      * @param id of the playlist that is to be used as the original track listing.
      */
     public void createRandomPlaylist(Session session, String id) {
-        List<Album> albums = this.getUniqueAlbumList(spotifyService.getPlaylistTracks(session, id));
+        List<Album> albums = this.getUniqueAlbumList(session, spotifyService.getPlaylistTracks(session, id));
         String playlistName = spotifyService.getUserPlaylist(session, id).getName();
         albums = this.shuffleAlbumList(albums);
         Playlist randomPlaylist = spotifyService.createUserPlaylist(getPlaylistName(playlistName), session);
@@ -66,10 +70,14 @@ public class PlaylistService {
      * randomized order of full albums.
      */
     void createRandomDiscoverWeekly(Session session) {
+        log.trace("Creating random discover weekly");
         String playlistName = getPlaylistName("Discover Weekly");
         List<Track> tracks = spotifyService.getPlaylistTracks(session, SPOTIFY_USER, spotifyProperties.getDiscoverWeeklyId());
-        List<Album> albums = this.getUniqueAlbumList(tracks);
+        log.trace("Creating random discover weekly");
+        List<Album> albums = this.getUniqueAlbumList(session, tracks);
+        log.trace("Creating random discover weekly");
         Playlist newPlaylist = spotifyService.createUserPlaylist(playlistName, session);
+        log.trace("Creating random discover weekly");
         this.addAlbumListToPlaylist(session, albums, newPlaylist);
     }
 
@@ -78,9 +86,10 @@ public class PlaylistService {
      * randomized order of full albums.
      */
     void createRandomReleaseRadar(Session session) {
+        log.trace("Creating random release radar");
         String playlistName = getPlaylistName("Release Radar");
         List<Track> tracks = spotifyService.getPlaylistTracks(session, SPOTIFY_USER, spotifyProperties.getReleaseRadarId());
-        List<Album> albums = this.getUniqueAlbumList(tracks);
+        List<Album> albums = this.getUniqueAlbumList(session, tracks);
         Playlist newPlaylist = spotifyService.createUserPlaylist(playlistName, session);
         this.addAlbumListToPlaylist(session, albums, newPlaylist);
     }
@@ -88,7 +97,7 @@ public class PlaylistService {
     /**
      * Resolves a list of tracks to the associated list of full albums.
      */
-    private List<Album> getUniqueAlbumList(List<Track> trackList) {
+    private List<Album> getUniqueAlbumList(Session session, List<Track> trackList) {
         Set<String> albumIds = new HashSet<>();
         albumIds.addAll(
                 trackList.stream()
@@ -96,7 +105,7 @@ public class PlaylistService {
                         .collect(Collectors.toList())
         );
         return albumIds.stream()
-                .map(albumId -> spotifyService.getAlbumById(albumId))
+                .map(albumId -> spotifyService.getAlbumById(session, albumId))
                 .collect(Collectors.toList());
     }
 
