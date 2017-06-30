@@ -40,8 +40,9 @@ public class AutomationService {
 
     @Scheduled(cron = "0 0 2 ? * MON")
     public void runMondaySchedule() {
+        log.debug("Running Monday scheduled jobs");
         if (sessionSet) {
-            log.debug("Session set: " + session.toString());
+            log.trace("Session set: " + session.toString());
             session = tokenService.updateSessionToken(session);
             playlistService.createRandomDiscoverWeekly(session);
         } else {
@@ -51,8 +52,9 @@ public class AutomationService {
 
     @Scheduled(cron = "0 0 2 ? * FRI")
     public void runFridaySchedule() {
+        log.debug("Running Friday scheduled jobs");
         if(sessionSet) {
-            log.debug("Session set: " + session.toString());
+            log.trace("Session set: " + session.toString());
             session = tokenService.updateSessionToken(session);
             playlistService.createRandomReleaseRadar(session);
         } else {

@@ -39,7 +39,7 @@ public class SpotifyService {
         String destination = ROOT_URL + API_VERSION + "/albums/" + albumId;
         HttpEntity<Album> entity = new HttpEntity<>(getAuthHeaders(session));
         Album album = restTemplate.exchange(destination, HttpMethod.GET, entity, Album.class).getBody();
-        album.setTracksList(resolvePaging(album.getPagingTracks(), Track.class));
+        album.setTracksList(resolvePaging(album.getPagingTracks(), Track.class, session));
         log.debug("Album found: " + album.getName());
         return album;
     }
@@ -157,6 +157,7 @@ public class SpotifyService {
     /**
      * Resolves a paging response from Spotify to a list of objects.
      */
+    @Deprecated
     private List resolvePaging(Paging response, Class convertTo) {
         List output = response.getConvertedItems(mapper, convertTo);
         String destination;

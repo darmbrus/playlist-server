@@ -70,14 +70,10 @@ public class PlaylistService {
      * randomized order of full albums.
      */
     void createRandomDiscoverWeekly(Session session) {
-        log.trace("Creating random discover weekly");
         String playlistName = getPlaylistName("Discover Weekly");
         List<Track> tracks = spotifyService.getPlaylistTracks(session, SPOTIFY_USER, spotifyProperties.getDiscoverWeeklyId());
-        log.trace("Creating random discover weekly");
         List<Album> albums = this.getUniqueAlbumList(session, tracks);
-        log.trace("Creating random discover weekly");
         Playlist newPlaylist = spotifyService.createUserPlaylist(playlistName, session);
-        log.trace("Creating random discover weekly");
         this.addAlbumListToPlaylist(session, albums, newPlaylist);
     }
 
