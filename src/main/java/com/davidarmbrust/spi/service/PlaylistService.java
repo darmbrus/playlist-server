@@ -71,8 +71,7 @@ public class PlaylistService {
      */
     void createRandomDiscoverWeekly(Session session) {
         String playlistName = getPlaylistName("Discover Weekly");
-        List<Track> tracks = spotifyService.getPlaylistTracks(session, SPOTIFY_USER, spotifyProperties.getDiscoverWeeklyId());
-        List<Album> albums = this.getUniqueAlbumList(session, tracks);
+        List<Album> albums = getAlbumsFromPlaylist(session, SPOTIFY_USER, spotifyProperties.getDiscoverWeeklyId());
         Playlist newPlaylist = spotifyService.createUserPlaylist(playlistName, session);
         this.addAlbumListToPlaylist(session, albums, newPlaylist);
     }
@@ -84,10 +83,32 @@ public class PlaylistService {
     void createRandomReleaseRadar(Session session) {
         log.trace("Creating random release radar");
         String playlistName = getPlaylistName("Release Radar");
-        List<Track> tracks = spotifyService.getPlaylistTracks(session, SPOTIFY_USER, spotifyProperties.getReleaseRadarId());
-        List<Album> albums = this.getUniqueAlbumList(session, tracks);
+        List<Album> albums = getAlbumsFromPlaylist(session, SPOTIFY_USER, spotifyProperties.getReleaseRadarId());
         Playlist newPlaylist = spotifyService.createUserPlaylist(playlistName, session);
         this.addAlbumListToPlaylist(session, albums, newPlaylist);
+    }
+
+    public void createPlaylistFromUri(Session session, String uri) {
+        log.trace("Creating playlist from: " + uri);
+        String username;
+        String id;
+        try {
+            String[] strings = uri.split(":");
+            username = strings[2];
+            id = strings[4];
+            String name = getPlaylistName(spotifyService.getUserPlaylist(session, username, id).getName());
+            List<Album> albums = getAlbumsFromPlaylist(session, username, id);
+            Playlist playlist = spotifyService.createUserPlaylist(name, session);
+            this.addAlbumListToPlaylist(session, albums, playlist);
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            log.error("Could not parse uri" + uri);
+            log.debug("Message: " + ex.getMessage(), ex);
+        }
+    }
+
+    private List<Album> getAlbumsFromPlaylist(Session session, String username, String id) {
+        List<Track> tracks = spotifyService.getPlaylistTracks(session, username, id);
+        return this.getUniqueAlbumList(session, tracks);
     }
 
     /**

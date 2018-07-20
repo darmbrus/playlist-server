@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.HashMap;
@@ -96,11 +97,15 @@ public class SpotifyService {
         return resolvePaging(response, Playlist.class, session);
     }
 
+    public Playlist getUserPlaylist(Session session, String id) {
+        return getUserPlaylist(session, session.getUser().getId(), id);
+    }
+
     /**
      * Retrieves a playlist by ID for a user from Spotify.
      */
-    public Playlist getUserPlaylist(Session session, String id) {
-        String destination = ROOT_URL + API_VERSION + "/users/" + session.getUser().getId() + "/playlists/" + id;
+    public Playlist getUserPlaylist(Session session, String username, String id) {
+        String destination = ROOT_URL + API_VERSION + "/users/" + username + "/playlists/" + id;
         HttpEntity entity = new HttpEntity(getAuthHeaders(session));
         return restTemplate.exchange(destination, HttpMethod.GET, entity, Playlist.class).getBody();
     }
@@ -135,8 +140,19 @@ public class SpotifyService {
         body.put("uris", trackList);
         HttpHeaders headers = getAuthHeaders(session);
         HttpEntity entity = new HttpEntity(body, headers);
-        ResponseEntity response = restTemplate.exchange(destination, HttpMethod.POST, entity, Object.class);
-        log.debug("Tracks added to playlist: " + playlist + " " + response.getBody());
+        try {
+            ResponseEntity response = restTemplate.exchange(destination, HttpMethod.POST, entity, Object.class);
+            log.debug("Tracks added to playlist: " + playlist + " " + response.getBody());
+        } catch (HttpClientErrorException ex) {
+            log.debug(ex.getMessage());
+            int sleep = Integer.parseInt(ex.getResponseHeaders().getFirst("Retry-After"));
+            try {
+                log.debug("Thread sleeping for:" + sleep + " seconds");
+                Thread.sleep(sleep * 1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     /**

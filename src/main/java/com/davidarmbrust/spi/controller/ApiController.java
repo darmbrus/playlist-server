@@ -99,6 +99,18 @@ public class ApiController {
     }
 
     @RequestMapping(
+            value = "/uri/{uri}/random",
+            method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @ResponseBody
+    public void createRandomPlaylistFromUri(@PathVariable String uri, HttpServletRequest request) {
+        log.info("Hit /api/uri/" + uri + "/random");
+        Session session = sessionUtility.getSession(request);
+        playlistService.createPlaylistFromUri(session, uri);
+    }
+
+    @RequestMapping(
             value = "/run_monday",
             method = RequestMethod.GET
     )
